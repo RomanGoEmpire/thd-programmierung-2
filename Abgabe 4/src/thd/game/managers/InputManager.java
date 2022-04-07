@@ -69,7 +69,7 @@ class InputManager {
                     x.shoot();
                     break;
                 default:
-                    throw new IllegalStateException("Unexpected value: " + pressedKeys[0]);
+                    break;
             }
         }
     }
