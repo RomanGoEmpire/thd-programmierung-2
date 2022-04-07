@@ -45,7 +45,7 @@ class InputManager {
                     x.shoot();
                     break;
                 default:
-                    throw new IllegalStateException("Unexpected value: " + keyCode);
+                    break;
             }
         }
     }
