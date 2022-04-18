@@ -1,6 +1,5 @@
 package thd.gameobjects.base;
 
-import thd.game.managers.GamePlayManager;
 import thd.gameview.GameView;
 
 /**
@@ -11,8 +10,6 @@ public class GameObject {
      * window the object is displayed in.
      */
     protected final GameView gameView;
-
-    protected final GamePlayManager gamePlayManager;
     /**
      * orientation of the object.
      */
@@ -43,9 +40,8 @@ public class GameObject {
      *
      * @param gameView is the window it is displayed.
      */
-    public GameObject(GameView gameView, GamePlayManager gamePlayManager) {
+    public GameObject(GameView gameView) {
         this.gameView = gameView;
-        this.gamePlayManager = gamePlayManager;
         position = new Position(0, 0);
     }
 

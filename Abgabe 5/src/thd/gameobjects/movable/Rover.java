@@ -1,6 +1,5 @@
 package thd.gameobjects.movable;
 
-import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
 import thd.gameview.GameView;
@@ -15,8 +14,8 @@ public class Rover extends GameObject {
      *
      * @param gameView is the window in which it gets displayed
      */
-    public Rover(GameView gameView, GamePlayManager gamePlayManager) {
-        super(gameView, gamePlayManager);
+    public Rover(GameView gameView) {
+        super(gameView);
         position = new Position(0, (GameView.HEIGHT - 52));
         speedInPixel = 1;
         size = 0.1;

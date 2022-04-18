@@ -1,6 +1,5 @@
 package thd.gameobjects.movable.ufo;
 
-import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.FlyingObject;
 import thd.gameobjects.base.Position;
 import thd.gameview.GameView;
@@ -18,8 +17,8 @@ public class Triangle extends FlyingObject {
      *
      * @param gameView is the window in which it gets displayed
      */
-    public Triangle(GameView gameView, GamePlayManager gamePlayManager) {
-        super(gameView, gamePlayManager);
+    public Triangle(GameView gameView) {
+        super(gameView);
         speedInPixel = 3;
         generateRandomSpawnPosition();
         calculateRandomTargetPosition();

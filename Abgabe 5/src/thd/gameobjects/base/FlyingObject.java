@@ -1,6 +1,5 @@
 package thd.gameobjects.base;
 
-import thd.game.managers.GamePlayManager;
 import thd.gameview.GameView;
 
 import java.util.Random;
@@ -19,8 +18,8 @@ public class FlyingObject extends GameObject {
      *
      * @param gameView is the window it is displayed.
      */
-    public FlyingObject(GameView gameView, GamePlayManager gamePlayManager) {
-        super(gameView, gamePlayManager);
+    public FlyingObject(GameView gameView) {
+        super(gameView);
         random = new Random();
     }
 

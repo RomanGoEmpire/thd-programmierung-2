@@ -15,23 +15,21 @@ class GameObjectManager {
 
     final X x;
     private final GameView gameView;
-    private final GamePlayManager gamePlayManager;
-    public final LinkedList<GameObject> gameObjects;
+    private final LinkedList<GameObject> gameObjects;
     private final ArrayList<GameObject> toAdd;
     private final ArrayList<GameObject> toRemove;
     private int counter;
 
-    GameObjectManager(GameView gameView, GamePlayManager gamePlayManager) {
+    GameObjectManager(GameView gameView) {
         this.gameView = gameView;
-        this.gamePlayManager = gamePlayManager;
         gameObjects = new LinkedList<>();
         toAdd = new ArrayList<>();
         toRemove = new ArrayList<>();
-        gameObjects.add(new City(gameView, gamePlayManager));
-        gameObjects.add(new Triangle(gameView, gamePlayManager));
-        gameObjects.add(new Ufo(gameView, gamePlayManager));
-        gameObjects.add(new Rover(gameView, gamePlayManager));
-        x = new X(gameView, gamePlayManager);
+        gameObjects.add(new City(gameView));
+        gameObjects.add(new Triangle(gameView));
+        gameObjects.add(new Ufo(gameView));
+        gameObjects.add(new Rover(gameView));
+        x = new X(gameView);
         counter = 1;
     }
 
@@ -71,19 +69,5 @@ class GameObjectManager {
         gameObjects.removeAll(toRemove);
         toAdd.clear();
         toRemove.clear();
-    }
-
-    void spawn(GameObject gameObject) {
-        addGameObject(gameObject);
-    }
-
-    void destroy(GameObject gameObject) {
-            removeGameObject(gameObject);
-    }
-
-    protected GameObject createUfo(){
-        Ufo ufo =  new Ufo(gameView,gamePlayManager);
-        ufo.changePosition(100,100);
-        return ufo;
     }
 }

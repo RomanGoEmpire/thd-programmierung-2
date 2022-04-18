@@ -1,6 +1,5 @@
 package thd.gameobjects.movable;
 
-import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
 import thd.gameview.GameView;
@@ -25,8 +24,8 @@ public class City extends GameObject {
      *
      * @param gameView window it is displayed.
      */
-    public City(GameView gameView, GamePlayManager gamePlayManager) {
-        super(gameView, gamePlayManager);
+    public City(GameView gameView) {
+        super(gameView);
         random = new Random();
         int amountOfHouses = 10;
         cityXStartingPosition = new int[amountOfHouses];

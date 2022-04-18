@@ -1,6 +1,5 @@
 package thd.gameobjects.movable;
 
-import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
 import thd.gameview.GameView;
@@ -20,8 +19,8 @@ public class X extends GameObject {
      *
      * @param gameView is the window it gets displayed.
      */
-    public X(GameView gameView, GamePlayManager gamePlayManager) {
-        super(gameView, gamePlayManager);
+    public X(GameView gameView) {
+        super(gameView);
         speedInPixel = 5;
         position = new Position(GameView.WIDTH / 2d, GameView.HEIGHT / 2d);
         visible = true;
