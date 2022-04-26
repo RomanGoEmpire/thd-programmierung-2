@@ -5,7 +5,6 @@ import thd.gameobjects.movable.City;
 import thd.gameobjects.movable.Rover;
 import thd.gameobjects.movable.X;
 import thd.gameobjects.movable.ufo.Triangle;
-import thd.gameobjects.movable.ufo.Ufo;
 import thd.gameview.GameView;
 
 import java.util.ArrayList;
@@ -16,21 +15,22 @@ class GameObjectManager {
     final X x;
     private final GameView gameView;
     private final LinkedList<GameObject> gameObjects;
+
     private final ArrayList<GameObject> toAdd;
     private final ArrayList<GameObject> toRemove;
     private int counter;
 
-    GameObjectManager(GameView gameView) {
+    GameObjectManager(GameView gameView, GamePlayManager gamePlayManager) {
         this.gameView = gameView;
         gameObjects = new LinkedList<>();
         toAdd = new ArrayList<>();
         toRemove = new ArrayList<>();
-        gameObjects.add(new City(gameView));
-        gameObjects.add(new Triangle(gameView));
-        gameObjects.add(new Ufo(gameView));
-        gameObjects.add(new Rover(gameView));
-        x = new X(gameView);
+        gameObjects.add(new City(gameView, gamePlayManager));
+        gameObjects.add(new Triangle(gameView, gamePlayManager));
+        gameObjects.add(new Rover(gameView, gamePlayManager));
+        x = new X(gameView, gamePlayManager);
         counter = 1;
+
     }
 
     void updateGameObjects() {
@@ -69,5 +69,12 @@ class GameObjectManager {
         gameObjects.removeAll(toRemove);
         toAdd.clear();
         toRemove.clear();
+    }
+    void spawn(GameObject gameObject) {
+        toAdd.add(gameObject);
+    }
+
+    void destroy(GameObject gameObject) {
+        toRemove.add(gameObject);
     }
 }

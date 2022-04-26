@@ -1,5 +1,6 @@
 package thd.gameobjects.movable.ufo;
 
+import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.FlyingObject;
 import thd.gameobjects.base.Position;
 import thd.gameview.GameView;
@@ -17,11 +18,12 @@ public class Ufo extends FlyingObject {
      * an Ufo is generated.
      *
      * @param gameView is the window in which it gets displayed
+     * @param position
      */
 
-    public Ufo(GameView gameView) {
-        super(gameView);
-        generateRandomSpawnPosition();
+    public Ufo(GameView gameView, GamePlayManager gamePlayManager, Position position) {
+        super(gameView,gamePlayManager);
+        this.position = position;
         calculateRandomTargetPosition();
         speedInPixel = 2;
         size = 0.25;
@@ -67,11 +69,6 @@ public class Ufo extends FlyingObject {
             position.right(Math.sin(counter / 10d));
         }
         position.up(Math.cos(counter / 10d));
-    }
-
-    @Override
-    protected void generateRandomSpawnPosition() {
-        position = new Position(random.nextInt((int) (GameView.WIDTH - width)), -100);
     }
 
     @Override
