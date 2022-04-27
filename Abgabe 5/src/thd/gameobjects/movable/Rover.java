@@ -5,12 +5,18 @@ import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
 import thd.gameview.GameView;
 
+import java.awt.*;
+
 /**
  * An object which can be controlled by the Player. It can drive and shoot.
  */
 public class Rover extends GameObject {
 
-    /**
+
+    private final double shotsPerSecondUp;
+    private boolean shooting;
+    boolean allowedToShoot;
+        /**
      * An Rover is generated.
      *
      * @param gameView is the window in which it gets displayed
@@ -18,8 +24,11 @@ public class Rover extends GameObject {
     public Rover(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
         position = new Position(0, (GameView.HEIGHT - 52));
-        speedInPixel = 1;
+        speedInPixel = 1.2;
+        shotsPerSecondUp = 10;
         size = 0.1;
+        shooting = false;
+        allowedToShoot = true;
     }
 
     @Override
@@ -27,15 +36,19 @@ public class Rover extends GameObject {
         if (position.x >= 1000) {
             position.x = -120;
         }
-        gameView.addImageToCanvas("rover.png", position.x, position.y, size, 0);
-        gameView.addImageToCanvas("tire.png", position.x + 32, position.y + 24, size, rotation * 2);
-        gameView.addImageToCanvas("tire.png", position.x + 2, position.y + 24, size, 150 + rotation * 2);
-        gameView.addImageToCanvas("tire.png", position.x + 100, position.y + 24, size, 100 + rotation * 2);
+        if (shooting) {
+            gameView.addTextToCanvas("O", position.x, position.y, 50, Color.white, 0);
+            shooting = false;
+        } else {
+            gameView.addImageToCanvas("rover.png", position.x, position.y, size, 0);
+            gameView.addImageToCanvas("tire.png", position.x + 32, position.y + 24, size, rotation * 2);
+            gameView.addImageToCanvas("tire.png", position.x + 2, position.y + 24, size, 150 + rotation * 2);
+            gameView.addImageToCanvas("tire.png", position.x + 100, position.y + 24, size, 100 + rotation * 2);
+        }
     }
 
     @Override
     public void updatePosition() {
-        position.right(speedInPixel);
         updateRotation(speedInPixel);
     }
 
@@ -46,6 +59,51 @@ public class Rover extends GameObject {
      */
     private void updateRotation(double rotation) {
         this.rotation += rotation;
+    }
+
+    /**
+     * Movement left.
+     */
+    public void left() {
+        position.left(speedInPixel);
+    }
+
+    /**
+     * Movement right.
+     */
+    public void right() {
+        position.right(speedInPixel);
+    }
+
+    /**
+     * Movement up.
+     */
+    public void up() {
+        position.up(speedInPixel);
+    }
+
+
+    /**
+     * Movement down.
+     */
+    public void down() {
+        position.down(speedInPixel);
+    }
+
+    /**
+     * shoots.
+     */
+    public void shoot() {
+        if (!gameView.timerIsActive("bullet-up", this)) {
+            gameView.activateTimer("bullet-up", this, (long) (1000 / shotsPerSecondUp));
+            BulletUP roverBulletUP = new BulletUP(gameView, gamePlayManager, new Position(position.x, position.y));
+            gamePlayManager.spawn(roverBulletUP);
+        }
+        if (allowedToShoot) {
+            BulletRight roverBulletRight = new BulletRight(gameView, gamePlayManager, new Position(position.x, position.y), this);
+            gamePlayManager.spawn(roverBulletRight);
+            allowedToShoot = false;
+        }
     }
 
 }

@@ -3,7 +3,6 @@ package thd.game.managers;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.movable.City;
 import thd.gameobjects.movable.Rover;
-import thd.gameobjects.movable.X;
 import thd.gameobjects.movable.ufo.Triangle;
 import thd.gameview.GameView;
 
@@ -12,7 +11,7 @@ import java.util.LinkedList;
 
 class GameObjectManager {
 
-    protected X x;
+    protected Rover rover;
     private final GameView gameView;
     private final LinkedList<GameObject> gameObjects;
 
@@ -24,11 +23,10 @@ class GameObjectManager {
         gameObjects = new LinkedList<>();
         toAdd = new ArrayList<>();
         toRemove = new ArrayList<>();
-        x = new X(gameView, gamePlayManager);
+        rover = new Rover(gameView, gamePlayManager);
         gameObjects.add(new City(gameView, gamePlayManager));
         gameObjects.add(new Triangle(gameView, gamePlayManager));
-        gameObjects.add(new Rover(gameView, gamePlayManager));
-        gameObjects.add(x);
+        gameObjects.add(rover);
 
     }
 
@@ -65,13 +63,5 @@ class GameObjectManager {
         gameObjects.removeAll(toRemove);
         toAdd.clear();
         toRemove.clear();
-    }
-
-    void spawn(GameObject gameObject) {
-        toAdd.add(gameObject);
-    }
-
-    void destroy(GameObject gameObject) {
-        toRemove.add(gameObject);
     }
 }

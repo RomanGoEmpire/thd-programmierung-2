@@ -1,18 +1,18 @@
 package thd.game.managers;
 
-import thd.gameobjects.movable.X;
+import thd.gameobjects.movable.Rover;
 import thd.gameview.GameView;
 
 import java.awt.event.KeyEvent;
 
 class InputManager {
-    private static final boolean DIAGONAL_MOVEMENT_ALLOWED = false;
+    private static final boolean DIAGONAL_MOVEMENT_ALLOWED = true;
     private final GameView gameView;
-    private final X x;
+    private final Rover rover;
 
-    InputManager(GameView gameView, X x) {
+    InputManager(GameView gameView, Rover rover) {
         this.gameView = gameView;
-        this.x = x;
+        this.rover = rover;
     }
 
     void updateUserInputs() {
@@ -28,23 +28,16 @@ class InputManager {
         }
     }
 
-
     private void processKeyCode(int keyCode) {
         switch (keyCode) {
-            case KeyEvent.VK_UP:
-                x.up();
-                break;
-            case KeyEvent.VK_DOWN:
-                x.down();
-                break;
             case KeyEvent.VK_LEFT:
-                x.left();
+                rover.left();
                 break;
             case KeyEvent.VK_RIGHT:
-                x.right();
+                rover.right();
                 break;
             case KeyEvent.VK_SPACE:
-                x.shoot();
+                rover.shoot();
                 break;
             default:
                 break;

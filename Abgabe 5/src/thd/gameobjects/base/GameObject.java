@@ -13,7 +13,6 @@ public class GameObject {
     protected final GameView gameView;
 
     protected final GamePlayManager gamePlayManager;
-
     /**
      * orientation of the object.
      */
@@ -60,7 +59,6 @@ public class GameObject {
      * The status of the object is updated.
      */
     public void updateStatus() {
-
     }
 
     /**
