@@ -34,12 +34,10 @@ public class GamePlayManager {
         if (!gameView.timerIsActive("spawn", this)) {
             gameView.activateTimer("spawn", this, 1000);
             gameObjectManager.spawn(ufos.get(ufos.size() - 1));
-            System.out.println("spawn");
         }
         if (!gameView.timerIsActive("destroy", this)) {
             gameView.activateTimer("destroy", this, 1500);
             gameObjectManager.destroy(ufos.get(ufos.size() - 1));
-            System.out.println("destroy");
         }
     }
 }
