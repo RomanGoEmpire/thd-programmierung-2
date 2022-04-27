@@ -12,24 +12,23 @@ import java.util.LinkedList;
 
 class GameObjectManager {
 
-    final X x;
+    protected X x;
     private final GameView gameView;
     private final LinkedList<GameObject> gameObjects;
 
     private final ArrayList<GameObject> toAdd;
     private final ArrayList<GameObject> toRemove;
-    private int counter;
 
     GameObjectManager(GameView gameView, GamePlayManager gamePlayManager) {
         this.gameView = gameView;
         gameObjects = new LinkedList<>();
         toAdd = new ArrayList<>();
         toRemove = new ArrayList<>();
+        x = new X(gameView, gamePlayManager);
         gameObjects.add(new City(gameView, gamePlayManager));
         gameObjects.add(new Triangle(gameView, gamePlayManager));
         gameObjects.add(new Rover(gameView, gamePlayManager));
-        x = new X(gameView, gamePlayManager);
-        counter = 1;
+        gameObjects.add(x);
 
     }
 
@@ -41,9 +40,6 @@ class GameObjectManager {
             gameObject.updatePosition();
             gameObject.addToCanvas();
         }
-        x.updateStatus();
-        x.addToCanvas();
-        counter++;
     }
 
     /**
@@ -70,6 +66,7 @@ class GameObjectManager {
         toAdd.clear();
         toRemove.clear();
     }
+
     void spawn(GameObject gameObject) {
         toAdd.add(gameObject);
     }

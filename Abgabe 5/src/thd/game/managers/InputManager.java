@@ -18,61 +18,36 @@ class InputManager {
     void updateUserInputs() {
         Integer[] pressedKeys = gameView.getKeyCodesOfCurrentlyPressedKeys();
         if (DIAGONAL_MOVEMENT_ALLOWED) {
-            diagonalMovementAllowed(pressedKeys);
+            for (int keyCode : pressedKeys) {
+                processKeyCode(keyCode);
+            }
         } else {
-            diagonalMovementNotAllowed(pressedKeys);
-
-        }
-
-    }
-
-    private void diagonalMovementAllowed(Integer[] pressedKeys) {
-        for (int keyCode : pressedKeys) {
-            switch (keyCode) {
-                case KeyEvent.VK_UP:
-                    x.up();
-                    break;
-                case KeyEvent.VK_DOWN:
-                    x.down();
-                    break;
-                case KeyEvent.VK_LEFT:
-                    x.left();
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    x.right();
-                    break;
-                case KeyEvent.VK_SPACE:
-                    x.shoot();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    private void diagonalMovementNotAllowed(Integer[] pressedKeys) {
-        if (pressedKeys.length >= 1) {
-            switch (pressedKeys[0]) {
-                case KeyEvent.VK_UP:
-                    x.up();
-                    break;
-                case KeyEvent.VK_DOWN:
-                    x.down();
-                    break;
-                case KeyEvent.VK_LEFT:
-                    x.left();
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    x.right();
-                    break;
-                case KeyEvent.VK_SPACE:
-                    x.shoot();
-                    break;
-                default:
-                    break;
+            if (pressedKeys.length >= 1) {
+                processKeyCode(pressedKeys[0]);
             }
         }
     }
 
 
+    private void processKeyCode(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.VK_UP:
+                x.up();
+                break;
+            case KeyEvent.VK_DOWN:
+                x.down();
+                break;
+            case KeyEvent.VK_LEFT:
+                x.left();
+                break;
+            case KeyEvent.VK_RIGHT:
+                x.right();
+                break;
+            case KeyEvent.VK_SPACE:
+                x.shoot();
+                break;
+            default:
+                break;
+        }
+    }
 }
