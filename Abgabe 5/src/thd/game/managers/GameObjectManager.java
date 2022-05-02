@@ -63,5 +63,9 @@ class GameObjectManager {
         gameObjects.removeAll(toRemove);
         toAdd.clear();
         toRemove.clear();
+
+        if(gameObjects.size() >= 300){
+            throw new TooManyGameObjectsException("Too many objects");
+        }
     }
 }
