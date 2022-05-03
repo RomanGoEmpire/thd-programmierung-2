@@ -10,7 +10,6 @@ import java.util.Random;
 public class RandomBall extends GameObject {
 
     private final Random random;
-
     private final Position targetPosition;
 
     public RandomBall(GameView gameView) {
@@ -24,7 +23,6 @@ public class RandomBall extends GameObject {
 
     @Override
     public void addToCanvas() {
-
         gameView.addOvalToCanvas(position.x, position.y, size, size, 2, true, Color.yellow);
         gameView.addOvalToCanvas(targetPosition.x, targetPosition.y, size, size, 2, false, Color.white);
     }
@@ -32,7 +30,7 @@ public class RandomBall extends GameObject {
     @Override
     public void updatePosition() {
         double distance = position.distance(targetPosition);
-        if (distance >= speedInPixel) {
+        if (distance > speedInPixel) {
             position.right((targetPosition.x - position.x) / distance * speedInPixel);
             position.down((targetPosition.y - position.y) / distance * speedInPixel);
             rotation++;
@@ -44,6 +42,5 @@ public class RandomBall extends GameObject {
     private void calculateRandomTargetPosition() {
         targetPosition.x = random.nextInt(959);
         targetPosition.y = random.nextInt(539);
-
     }
 }

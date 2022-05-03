@@ -1,6 +1,7 @@
 package thd.gameobjects.base;
 
 import thd.gameview.GameView;
+
 /**
  * Upperclass for game objects which will get displayed on {@link GameView}.
  */
@@ -33,6 +34,7 @@ public class GameObject {
      * height of the object.
      */
     protected double height;
+
     /**
      * Initializes the GameObject.
      *
@@ -42,19 +44,25 @@ public class GameObject {
         this.gameView = gameView;
         position = new Position(0, 0);
     }
+
     /**
      * The object position is updated.
      */
-    public void updatePosition() {}
+    public void updatePosition() {
+    }
+
     /**
      * The status of the object is updated.
      */
-    public void updateStatus() {}
+    public void updateStatus() {
+    }
+
     /**
      * The object is added to the Canvas.
      */
     public void addToCanvas() {
     }
+
     /**
      * Gets the position of the object.
      *

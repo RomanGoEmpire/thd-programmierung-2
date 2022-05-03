@@ -1,18 +1,25 @@
-package thd.gameobjects.movable;
+package thd.game.utilities;
 
 import thd.game.managers.GamePlayManager;
+import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
 import thd.gameview.GameView;
 
 import java.awt.*;
 
-public class BulletUP extends GameObject {
+/**
+ * This class is a bullet which gets shot by the Rover. It moves up.
+ */
+
+public class BulletUP extends GameObject implements AutoMovable {
 
     /**
-     * Initializes the GameObject.
+     * Initializes the BulletUP.
      *
-     * @param gameView is the window it is displayed.
+     * @param gameView        is the window it is displayed.
+     * @param gamePlayManager is the manager, which makes sure that the objects are spawned and destroyed.
+     * @param position        is the position the Bullet should spawn
      */
     public BulletUP(GameView gameView, GamePlayManager gamePlayManager, Position position) {
         super(gameView, gamePlayManager);

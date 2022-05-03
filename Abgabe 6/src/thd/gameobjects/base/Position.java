@@ -12,6 +12,7 @@ import thd.gameview.GameView;
  *
  * @see GameView
  */
+
 public class Position {
     /**
      * x-coordinate.
@@ -43,8 +44,8 @@ public class Position {
     /**
      * decreases the x value by the instance variable.
      *
-     * @param left is the direction
-     **/
+     * @param left amount of pixel it changes
+     */
     public void left(double left) {
         x -= left;
     }
@@ -59,7 +60,7 @@ public class Position {
     /**
      * increases x value by instance variable.
      *
-     * @param right is the direction.
+     * @param right amount of pixel it changes
      */
     public void right(double right) {
         x += right;
@@ -75,7 +76,7 @@ public class Position {
     /**
      * decreases y value by instance variable.
      *
-     * @param up is the direction.
+     * @param up amount of pixel it changes
      */
     public void up(double up) {
         y -= up;
@@ -91,7 +92,7 @@ public class Position {
     /**
      * increases y value by instance variable.
      *
-     * @param down is the direction.
+     * @param down amount of pixel it changes
      */
     public void down(double down) {
         y += down;
@@ -112,6 +113,7 @@ public class Position {
      */
     public double distance(Position other) {
         return Math.sqrt(Math.pow(x - other.x, 2) + Math.pow(y - other.y, 2));
+
     }
 
     @Override

@@ -1,28 +1,35 @@
-package thd.gameobjects.movable;
+package thd.game.utilities;
 
 import thd.game.managers.GamePlayManager;
+import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
+import thd.gameobjects.movable.Rover;
 import thd.gameview.GameView;
 
 import java.awt.*;
 
-public class BulletRight extends GameObject {
+/**
+ * This class is a bullet which gets shot by the Rover. It moves up.
+ */
+public class BulletRight extends GameObject implements AutoMovable {
 
-    private Position roverPosition;
-    private Rover rover;
+    private final Position roverPosition;
+    private final Rover rover;
 
     /**
-     * Initializes the GameObject.
+     * Initializes the BulletRight.
      *
      * @param gameView        is the window it is displayed.
-     * @param gamePlayManager
+     * @param gamePlayManager is the manager, which makes sure that the objects are spawned and destroyed.
+     * @param position        is the position the Bullet should spawn
+     * @param rover           helps the Bullet to get destroyed at the right position
      */
     public BulletRight(GameView gameView, GamePlayManager gamePlayManager, Position position, Rover rover) {
         super(gameView, gamePlayManager);
         this.position = position;
         this.rover = rover;
-        roverPosition = new Position(rover.getPosition().x,rover.getPosition().y);
+        roverPosition = new Position(rover.getPosition().x, rover.getPosition().y);
         position.x += 110;
         speedInPixel = 1.5;
     }

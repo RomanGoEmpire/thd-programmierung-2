@@ -1,9 +1,11 @@
-package thd.gameobjects.movable;
+package thd.gameobjects.unmovable;
 
 import thd.game.managers.GamePlayManager;
+import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
 import thd.gameview.GameView;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -12,7 +14,7 @@ import java.util.Random;
  * Smaller buildings are more in background and move slower that the bigger ones.
  * Is displayed in {@link GameView}
  */
-public class City extends GameObject {
+public class City extends GameObject implements AutoMovable {
 
     private final Random random;
     private final int[] cityScaleFactors;
@@ -22,7 +24,8 @@ public class City extends GameObject {
     /**
      * Initializes the City.
      *
-     * @param gameView window it is displayed.
+     * @param gameView        window it is displayed.
+     * @param gamePlayManager is the manager, which makes sure that the objects are spawned and destroyed.
      */
     public City(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
@@ -35,6 +38,11 @@ public class City extends GameObject {
         fillArrayWithRandomNumbers(cityScaleFactors, 300, 644);
         Arrays.sort(cityScaleFactors);
         createCityPosition();
+    }
+
+    @Override
+    public void updateStatus() {
+
     }
 
     @Override
