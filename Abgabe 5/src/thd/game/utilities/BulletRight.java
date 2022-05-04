@@ -14,9 +14,8 @@ import java.awt.*;
  */
 public class BulletRight extends GameObject implements AutoMovable {
 
-    private final Position roverPosition;
     private final Rover rover;
-
+    private double startPoint;
     /**
      * Initializes the BulletRight.
      *
@@ -29,21 +28,19 @@ public class BulletRight extends GameObject implements AutoMovable {
         super(gameView, gamePlayManager);
         this.position = position;
         this.rover = rover;
-        roverPosition = new Position(rover.getPosition().x, rover.getPosition().y);
         position.x += 110;
-        speedInPixel = 1.5;
-        width = 300;
+        startPoint = position.x;
+        speedInPixel = 3;
+        width = 150;
     }
 
 
     @Override
     public void updateStatus() {
-        if (position.x + width < 0 || position.x > width) {
+        if (position.x - startPoint > width) {
             gamePlayManager.destroy(this);
             rover.allowedToShoot = true;
         }
-
-
     }
 
     @Override
