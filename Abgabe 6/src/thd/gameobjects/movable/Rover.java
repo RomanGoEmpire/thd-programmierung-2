@@ -97,6 +97,7 @@ public class Rover extends GameObject implements AutoMovable {
             BulletUP roverBulletUP = new BulletUP(gameView, gamePlayManager, new Position(position.x, position.y));
             gamePlayManager.spawn(roverBulletUP);
         }
+
         if (allowedToShoot) {
             BulletRight roverBulletRight = new BulletRight(gameView, gamePlayManager, new Position(position.x, position.y), this);
             gamePlayManager.spawn(roverBulletRight);

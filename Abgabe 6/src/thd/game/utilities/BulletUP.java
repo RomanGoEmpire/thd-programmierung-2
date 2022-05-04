@@ -2,8 +2,10 @@ package thd.game.utilities;
 
 import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.AutoMovable;
+import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
+import thd.gameobjects.movable.ufo.Ufo;
 import thd.gameview.GameView;
 
 import java.awt.*;
@@ -12,7 +14,7 @@ import java.awt.*;
  * This class is a bullet which gets shot by the Rover. It moves up.
  */
 
-public class BulletUP extends GameObject implements AutoMovable {
+public class BulletUP extends CollidableGameObject implements AutoMovable {
 
     /**
      * Initializes the BulletUP.
@@ -30,6 +32,14 @@ public class BulletUP extends GameObject implements AutoMovable {
     }
 
     @Override
+    protected void initializeHitbox() {
+        hitBoxWidth = 8;
+        hitBoxHeight = 8;
+        hitBoxOffsetX = 6;
+        hitBoxOffsetY = 3;
+    }
+
+    @Override
     public void updateStatus() {
         if (position.y < 0) {
             gamePlayManager.destroy(this);
@@ -44,5 +54,12 @@ public class BulletUP extends GameObject implements AutoMovable {
     @Override
     public void addToCanvas() {
         gameView.addTextToCanvas("*", position.x, position.y, 20, Color.green, 0);
+    }
+
+    @Override
+    public void reactToCollision(CollidableGameObject other) {
+        if (other.getClass() == Ufo.class) {
+            gamePlayManager.destroy(this);
+        }
     }
 }

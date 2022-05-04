@@ -40,10 +40,6 @@ public class GamePlayManager {
             ufos.add(ufo);
             spawn(ufos.get(ufos.size() - 1));
         }
-        if (!gameView.timerIsActive("destroy", this)) {
-            gameView.activateTimer("destroy", this, 1500);
-            destroy(ufos.get(random.nextInt(ufos.size())));
-        }
     }
 
     /**

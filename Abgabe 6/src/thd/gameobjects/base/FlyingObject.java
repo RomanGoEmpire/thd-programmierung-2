@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * Is an Object which moves in the upper half of the screen and tries to shoot the Rover.
  */
-public abstract class ObjectWithTargetPosition extends GameObject {
+public abstract class FlyingObject extends CollidableGameObject {
 
     protected Position targetPosition;
     protected boolean isAtTargetPosition;
@@ -20,7 +20,7 @@ public abstract class ObjectWithTargetPosition extends GameObject {
      * @param gameView        is the window it is displayed.
      * @param gamePlayManager is the manager, which makes sure that the objects are spawned and destroyed.
      */
-    public ObjectWithTargetPosition(GameView gameView, GamePlayManager gamePlayManager) {
+    public FlyingObject(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
         random = new Random();
     }

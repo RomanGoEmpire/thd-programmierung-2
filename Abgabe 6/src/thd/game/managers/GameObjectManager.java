@@ -1,9 +1,12 @@
 package thd.game.managers;
 
 import thd.gameobjects.base.AutoMovable;
+import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.GameObject;
+import thd.gameobjects.base.Position;
 import thd.gameobjects.movable.Rover;
 import thd.gameobjects.movable.ufo.Triangle;
+import thd.gameobjects.movable.ufo.Ufo;
 import thd.gameobjects.unmovable.City;
 import thd.gameview.GameView;
 
@@ -27,18 +30,33 @@ class GameObjectManager {
         gameObjects.add(new City(gameView, gamePlayManager));
         gameObjects.add(new Triangle(gameView, gamePlayManager));
         gameObjects.add(rover);
-
     }
 
     void updateGameObjects() {
         modifyGameObjectsList();
         gameView.addImageToCanvas("background.png", 0, 0, 1, 0);
+        ArrayList<CollidableGameObject> collidables = new ArrayList<>(gameObjects.size());
         for (GameObject gameObject : gameObjects) {
             gameObject.updateStatus();
             if (gameObject instanceof AutoMovable) {
                 ((AutoMovable) gameObject).updatePosition();
             }
             gameObject.addToCanvas();
+            if (gameObject instanceof CollidableGameObject) {
+                collidables.add((CollidableGameObject) gameObject);
+            }
+        }
+        detectCollisionsAndNotifyGameObjects(collidables);
+    }
+
+    private void detectCollisionsAndNotifyGameObjects(ArrayList<CollidableGameObject> collidables) {
+        for (int index = 0; index < collidables.size(); index++) {
+            for (int other = index + 1; other < collidables.size(); other++) {
+                if (collidables.get(index).collidesWith(collidables.get(other))) {
+                    collidables.get(index).reactToCollision(collidables.get(other));
+                    collidables.get(other).reactToCollision(collidables.get(index));
+                }
+            }
         }
     }
 
@@ -67,7 +85,7 @@ class GameObjectManager {
         toAdd.clear();
         toRemove.clear();
 
-        if (gameObjects.size() > 300) {
+        if (gameObjects.size() > 2000) {
             throw new TooManyGameObjectsException("Too Many Objects");
         }
     }

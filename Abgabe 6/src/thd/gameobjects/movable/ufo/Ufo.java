@@ -1,8 +1,10 @@
 package thd.gameobjects.movable.ufo;
 
 import thd.game.managers.GamePlayManager;
+import thd.game.utilities.BulletUP;
 import thd.gameobjects.base.AutoMovable;
-import thd.gameobjects.base.ObjectWithTargetPosition;
+import thd.gameobjects.base.CollidableGameObject;
+import thd.gameobjects.base.FlyingObject;
 import thd.gameobjects.base.Position;
 import thd.gameview.GameView;
 
@@ -10,7 +12,7 @@ import thd.gameview.GameView;
  * * Ufo is an enemy which has the goal to shoot the Rover.
  * It moves in the upper half of the screen.
  */
-public class Ufo extends ObjectWithTargetPosition implements AutoMovable {
+public class Ufo extends FlyingObject implements AutoMovable {
 
     private int counterForCurve;
     private boolean goingLeftToRight;
@@ -85,5 +87,20 @@ public class Ufo extends ObjectWithTargetPosition implements AutoMovable {
             targetPosition = new Position(random.nextInt(700), random.nextInt(50) + 100);
         }
         targetPosition = new Position(targetPosition.x, targetPosition.y);
+    }
+
+    @Override
+    protected void initializeHitbox() {
+        hitBoxWidth = 60;
+        hitBoxHeight = 25;
+        hitBoxOffsetX = 0;
+        hitBoxOffsetY = 20;
+    }
+
+    @Override
+    public void reactToCollision(CollidableGameObject other) {
+        if (other.getClass() == BulletUP.class) {
+            gamePlayManager.destroy(this);
+        }
     }
 }
