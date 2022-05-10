@@ -4,19 +4,16 @@ import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.Position;
-import thd.gameobjects.movable.Rock;
 import thd.gameobjects.movable.Rover;
 import thd.gameview.GameView;
 
 import java.awt.*;
 
 /**
- * BulletRight gets shot by the Rover. It moves in the right direction.
+ * Bulletdown gets shot by the Ufo. If it hits the Rover it will lose a life.
  */
-public class BulletRight extends CollidableGameObject implements AutoMovable {
 
-    private final Rover rover;
-    private final double startPoint;
+public class BulletDown extends CollidableGameObject implements AutoMovable {
 
     /**
      * Initializes the BulletRight.
@@ -24,16 +21,12 @@ public class BulletRight extends CollidableGameObject implements AutoMovable {
      * @param gameView        is the window it is displayed.
      * @param gamePlayManager is the manager, which makes sure that the objects are spawned and destroyed.
      * @param position        is the position the Bullet should spawn
-     * @param rover           helps the Bullet to get destroyed at the right position
      */
-    public BulletRight(GameView gameView, GamePlayManager gamePlayManager, Position position, Rover rover) {
+    public BulletDown(GameView gameView, GamePlayManager gamePlayManager, Position position) {
         super(gameView, gamePlayManager);
-        this.position.x = position.x + 100;
+        this.position.x = position.x;
         this.position.y = position.y;
-        this.rover = rover;
-        position.x += 110;
-        startPoint = position.x;
-        speedInPixel = 3;
+        speedInPixel = 1;
         width = 150;
     }
 
@@ -41,35 +34,32 @@ public class BulletRight extends CollidableGameObject implements AutoMovable {
     protected void initializeHitbox() {
         hitBoxWidth = 15;
         hitBoxHeight = 15;
-        hitBoxOffsetX = 37;
-        hitBoxOffsetY = 8;
-
+        hitBoxOffsetX = 0;
+        hitBoxOffsetY = 0;
     }
 
     @Override
     public void reactToCollision(CollidableGameObject other) {
-        if (other.getClass() == Rock.class) {
+        if (other.getClass() == Rover.class || other.getClass() == BulletUP.class) {
             gamePlayManager.destroy(this);
-            rover.allowedToShoot = true;
         }
     }
 
-
     @Override
     public void updateStatus() {
-        if (position.x - startPoint > width) {
+        if (position.y > GameView.WIDTH) {
             gamePlayManager.destroy(this);
-            rover.allowedToShoot = true;
         }
     }
 
     @Override
     public void updatePosition() {
-        position.right(speedInPixel);
+        position.down(speedInPixel);
     }
 
     @Override
     public void addToCanvas() {
-        gameView.addTextToCanvas("-O", position.x, position.y, 30, Color.RED, 0);
+        gameView.addRectangleToCanvas(position.x, position.y, 15, 15, 0, true, Color.yellow);
     }
 }
+
