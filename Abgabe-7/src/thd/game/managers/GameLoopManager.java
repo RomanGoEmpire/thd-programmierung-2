@@ -1,7 +1,7 @@
 package thd.game.managers;
 
-import thd.gameview.GameView;
 
+import thd.gameview.GameView;
 
 /**
  * The Class creates a window with help of the {@param Gameview}.

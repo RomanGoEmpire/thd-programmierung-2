@@ -5,8 +5,8 @@ import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.movable.Rover;
 import thd.gameobjects.movable.ufo.Triangle;
-import thd.gameobjects.unmovable.City;
-import thd.gameobjects.unmovable.TemporaryRock;
+import thd.gameobjects.unmovable.Rock;
+import thd.gameobjects.unmovable.newCity;
 import thd.gameview.GameView;
 
 import java.util.ArrayList;
@@ -25,13 +25,12 @@ class GameObjectManager {
         gameObjects = new LinkedList<>();
         toAdd = new ArrayList<>();
         toRemove = new ArrayList<>();
-        TemporaryRock temporaryRock = new TemporaryRock(gameView,gamePlayManager);
-
-        rover = new Rover(gameView, gamePlayManager,temporaryRock);
-        gameObjects.add(new City(gameView, gamePlayManager));
+        rover = new Rover(gameView, gamePlayManager);
+        gameObjects.add(new newCity(gameView,gamePlayManager,0.3));
+        gameObjects.add(new newCity(gameView, gamePlayManager,0.8));
         gameObjects.add(new Triangle(gameView, gamePlayManager));
         gameObjects.add(rover);
-        gameObjects.add(temporaryRock);
+        gameObjects.add(new Rock(gameView, gamePlayManager));
     }
 
     void updateGameObjects() {
@@ -89,6 +88,14 @@ class GameObjectManager {
 
         if (gameObjects.size() > 2000) {
             throw new TooManyGameObjectsException("Too Many Objects");
+        }
+    }
+
+    void moveWorld(double shiftX, double shiftY) {
+        for (GameObject gameObject : gameObjects) {
+            if (!(gameObject instanceof AutoMovable)) {
+                gameObject.worldHasMoved(shiftX, shiftY);
+            }
         }
     }
 }

@@ -68,4 +68,14 @@ public abstract class GameObject {
     public Position getPosition() {
         return position;
     }
+
+    /**
+     * corrects position.
+     * @param shiftX amount of shift in x direction.
+     * @param shiftY amount of shift in y direction.
+     */
+    public void worldHasMoved(double shiftX, double shiftY) {
+        position.x -= shiftX;
+        position.y -= shiftY;
+    }
 }

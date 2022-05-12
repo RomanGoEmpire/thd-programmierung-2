@@ -6,7 +6,6 @@ import thd.game.utilities.BulletUP;
 import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.Position;
-import thd.gameobjects.unmovable.TemporaryRock;
 import thd.gameview.GameView;
 
 import java.awt.*;
@@ -18,8 +17,6 @@ public class Rover extends CollidableGameObject implements AutoMovable {
 
 
     private final double shotsPerSecondUp;
-    //Temporary
-    private final TemporaryRock temporaryRock;
     private Status status;
     private String roverImage;
 
@@ -39,9 +36,8 @@ public class Rover extends CollidableGameObject implements AutoMovable {
      *
      * @param gameView        is the window in which it gets displayed
      * @param gamePlayManager is the manager, which makes sure that the objects are spawned and destroyed.
-     * @param temporaryRock   temporary.
      */
-    public Rover(GameView gameView, GamePlayManager gamePlayManager, TemporaryRock temporaryRock) {
+    public Rover(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
         position.x = 200;
         position.y = GameView.HEIGHT - 52;
@@ -51,7 +47,6 @@ public class Rover extends CollidableGameObject implements AutoMovable {
         shooting = false;
         allowedToShoot = true;
         jumpUP = true;
-        this.temporaryRock = temporaryRock;
         status = Status.STANDARD;
         roverImage = "rover.png";
     }
@@ -125,10 +120,6 @@ public class Rover extends CollidableGameObject implements AutoMovable {
      */
     public void left() {
         position.left(speedInPixel);
-        if (collidesWith(temporaryRock)) {
-            position.right(speedInPixel);
-            status = Status.DAMAGED;
-        }
     }
 
     /**

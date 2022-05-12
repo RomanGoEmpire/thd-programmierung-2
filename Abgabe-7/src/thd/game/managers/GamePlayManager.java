@@ -3,7 +3,7 @@ package thd.game.managers;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
 import thd.gameobjects.movable.FloorBomb;
-import thd.gameobjects.movable.Rock;
+import thd.gameobjects.unmovable.Rock;
 import thd.gameobjects.movable.ufo.Ufo;
 import thd.gameview.GameView;
 
@@ -26,6 +26,7 @@ public class GamePlayManager {
 
     void updateGamePlay() {
         spawnAndDestroyUFOs();
+        gameObjectManager.moveWorld(1, 0);
     }
 
     void setGameObjectManager(GameObjectManager gameObjectManager) {
@@ -43,12 +44,6 @@ public class GamePlayManager {
             gameView.activateTimer("floor-bomb", this, 10000);
             FloorBomb floorBomb = new FloorBomb(gameView, this);
             objects.add(floorBomb);
-            spawn(objects.get(objects.size() - 1));
-        }
-        if (!gameView.timerIsActive("Rock", this)) {
-            gameView.activateTimer("Rock", this, 8000);
-            Rock rock = new Rock(gameView, this);
-            objects.add(rock);
             spawn(objects.get(objects.size() - 1));
         }
     }

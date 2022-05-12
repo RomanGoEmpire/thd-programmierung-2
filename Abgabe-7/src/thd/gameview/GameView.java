@@ -519,7 +519,7 @@ public class GameView {
     }
 
     /**
-     * Checks if the timer that belongs to the given <code>true</code> already has expired.
+     * Checks if the timer that belongs to the given identifier already has expired.
      * This method returns <code>false</code>, as long as the timer is currently not running, even if it has never been
      * started. It returns <code>true</code>, as long the timer is running.
      *
@@ -530,6 +530,52 @@ public class GameView {
      */
     public boolean timerIsActive(String name, Object id) {
         return gameTime.timerIsActive(name, id);
+    }
+
+    /**
+     * Starts a timer with the given duration and delivers an alarm after the given time. The method <code>alarm()</code>
+     * will become <code>true</code> after the timer is due. The timer starts immediately.
+     *
+     * @param name     The identifier of the alarm to be set.
+     * @param id       The object that issued this request.
+     * @param duration The duration of the timer. After this duration, the method <code>alarm()</code> will become <code>true</code>.
+     */
+    public void setAlarm(String name, Object id, long duration) {
+        gameTime.setAlarm(name, id, duration);
+    }
+
+    /**
+     * Checks if the alarm that belongs to the given identifier already has been set. It returns <code>true</code> if the
+     * timer is currently set and waiting for the delivery of an alarm.
+     *
+     * @param name The identifier of the alarm to be checked.
+     * @param id   The object that the alarm belongs to.
+     * @return returns <code>true</code> if the timer is currently set and waiting for the delivery of an alarm.
+     */
+    public boolean alarmIsSet(String name, Object id) {
+        return gameTime.alarmIsSet(name, id);
+    }
+
+    /**
+     * Checks if the alarm that belongs to the given identifier is due. This method returns <code>true</code> if
+     * the alarm is due. After the timer was due and <code>alarm()</code> was called, the timer will be deleted.
+     *
+     * @param name The identifier of the alarm to be checked.
+     * @param id   The object that the alarm belongs to.
+     * @return <code>true</code> if the alarm is due.
+     */
+    public boolean alarm(String name, Object id) {
+        return gameTime.alarm(name, id);
+    }
+
+    /**
+     * Cancels the alarm that belongs to the given identifier, the timer will be deleted.
+     *
+     * @param name The identifier of the alarm to be canceled.
+     * @param id   The object that the alarm belongs to.
+     */
+    public void cancelAlarm(String name, Object id) {
+        gameTime.cancelAlarm(name, id);
     }
 
     /**
@@ -793,10 +839,12 @@ public class GameView {
 
         private final long startTimeInMilliseconds;
         private final HashMap<Long, Long> timers;
+        private final HashMap<Long, Long> alarms;
 
         private GameTime() {
             this.startTimeInMilliseconds = System.currentTimeMillis();
             this.timers = new HashMap<>(200);
+            this.alarms = new HashMap<>(200);
         }
 
         private int getCurrentTime() {
@@ -812,12 +860,43 @@ public class GameView {
         }
 
         private boolean timerIsActive(String name, Object id) {
-            boolean expired = true;
-            try {
-                expired = timers.get((long) name.hashCode() + System.identityHashCode(id)) - getCurrentTime() <= 0;
-            } catch (NullPointerException ignored) {
+            Long timerId = (long) name.hashCode() + System.identityHashCode(id);
+            Long startTime = timers.get(timerId);
+            if (startTime == null) {
+                return false;
+            }
+            boolean expired = startTime - getCurrentTime() <= 0;
+            if (expired) {
+                timers.remove(timerId);
             }
             return !expired;
+        }
+
+        private void setAlarm(String name, Object id, long duration) {
+            alarms.put((long) name.hashCode() + System.identityHashCode(id), getCurrentTime() + duration);
+        }
+
+        private boolean alarmIsSet(String name, Object id) {
+            Long alarmId = (long) name.hashCode() + System.identityHashCode(id);
+            return alarms.containsKey(alarmId);
+        }
+
+        private boolean alarm(String name, Object id) {
+            Long alarmId = (long) name.hashCode() + System.identityHashCode(id);
+            Long startTime = alarms.get(alarmId);
+            if (startTime == null) {
+                return false;
+            }
+            boolean expired = startTime - getCurrentTime() <= 0;
+            if (expired) {
+                alarms.remove(alarmId);
+            }
+            return expired;
+        }
+
+        public void cancelAlarm(String name, Object id) {
+            Long alarmId = (long) name.hashCode() + System.identityHashCode(id);
+            alarms.remove(alarmId);
         }
     }
 
@@ -918,20 +997,20 @@ public class GameView {
     }
 
     private static class Canvas implements Cloneable {
-        private final ArrayList<PrintObject> printObjects;
         private Color backgroundColor;
+        private final ArrayList<PrintObject> printObjects;
 
         Canvas() {
             this.backgroundColor = Color.black;
             this.printObjects = new ArrayList<>(30000);
         }
 
-        Color getBackgroundColor() {
-            return backgroundColor;
-        }
-
         void setBackgroundColor(Color backgroundColor) {
             this.backgroundColor = backgroundColor;
+        }
+
+        Color getBackgroundColor() {
+            return backgroundColor;
         }
 
         ArrayList<PrintObject> getPrintObjects() {
@@ -972,10 +1051,17 @@ public class GameView {
 
     private static class Frame extends JFrame {
 
-        private final JPanel statusBar;
         private Mouse mouse;
         private Keyboard keyboard;
+
+        private final JPanel statusBar;
         private JLabel statusLabelLinks;
+
+        void registerListeners(Mouse mouse, Keyboard keyboard) {
+            // Klassen
+            this.mouse = mouse;
+            this.keyboard = keyboard;
+        }
 
         Frame(PaintingPanel paintingPanel) {
 
@@ -1123,12 +1209,6 @@ public class GameView {
             setVisible(true);
         }
 
-        void registerListeners(Mouse mouse, Keyboard keyboard) {
-            // Klassen
-            this.mouse = mouse;
-            this.keyboard = keyboard;
-        }
-
         JLabel getStatusLabelLinks() {
             return statusLabelLinks;
         }
@@ -1139,9 +1219,10 @@ public class GameView {
     }
 
     private static class Keyboard {
-        private final static int KEY_EVENT_BUFFER_SIZE = 25;
         private final ArrayBlockingQueue<KeyEvent> keyboardEvents;
         private final ArrayBlockingQueue<Integer> keyCodesOfCurrentlyPressedKeys;
+
+        private final static int KEY_EVENT_BUFFER_SIZE = 25;
 
         Keyboard() {
             keyboardEvents = new ArrayBlockingQueue<>(KEY_EVENT_BUFFER_SIZE, true);
@@ -1180,12 +1261,15 @@ public class GameView {
     }
 
     private static class Mouse implements ActionListener {
-        private final static int MOUSE_EVENT_BUFFER_SIZE = 25;
         private final SwingAdapter swingAdapter;
-        private final Timer invisibleMouseTimer;
-        private final ArrayBlockingQueue<MouseEvent> mousePointerEvents;
+
         private boolean invisibleMouseCursor;
         private boolean invisibleMouseCursorMoved;
+        private final Timer invisibleMouseTimer;
+
+        private final static int MOUSE_EVENT_BUFFER_SIZE = 25;
+        private final ArrayBlockingQueue<MouseEvent> mousePointerEvents;
+
         private boolean useMouse;
 
         Mouse(SwingAdapter swingAdapter) {
@@ -1275,8 +1359,8 @@ public class GameView {
     }
 
     private static class Sound {
-        private static int soundCounter;
         private final ConcurrentHashMap<Integer, Optional<Clip>> clips;
+        private static int soundCounter;
 
         Sound() {
             this.clips = new ConcurrentHashMap<>();
@@ -1342,19 +1426,19 @@ public class GameView {
 
     private static class SwingAdapter {
 
-        private final static int IMAGE_MAP_LIMIT_IN_MB = 1000;
         private final PaintingPanel paintingPanel;
         private final Frame frame;
-        private final Font font;
-        private final BufferedImage[] bufferedImages;
-        private final HashMap<Integer, BufferedImage> imageMap;
         private Sound sound;
         private Mouse mouse;
+        private final Font font;
         private BufferedImage bufferedImage;
+        private final BufferedImage[] bufferedImages;
         private int currentBufferedImage;
         private Graphics2D g2D;
         private HashMap<Character, Color> colorMap;
+        private final HashMap<Integer, BufferedImage> imageMap;
         private double sizeOfImageMapInMB;
+        private final static int IMAGE_MAP_LIMIT_IN_MB = 1000;
 
         SwingAdapter() {
             this.paintingPanel = new PaintingPanel();
@@ -1651,10 +1735,10 @@ public class GameView {
 
     private static class Window {
 
-        private final static int FRAMES_PER_SECOND = 120;
-        private final static int NANOS_PER_FRAME = 1_000_000_000 / FRAMES_PER_SECOND;
         private final SwingAdapter swingAdapter;
         private long lastPrintTimeInNanos;
+        private final static int FRAMES_PER_SECOND = 120;
+        private final static int NANOS_PER_FRAME = 1_000_000_000 / FRAMES_PER_SECOND;
 
         Window(SwingAdapter swingAdapter) {
             this.swingAdapter = swingAdapter;
@@ -1717,8 +1801,9 @@ public class GameView {
         private final java.awt.Rectangle enterBox;
 
         private final int yLowerLine;
-        private final boolean useMouseBackup;
+
         private boolean startScreenClosed;
+        private final boolean useMouseBackup;
 
 
         StartScreenWithChooseBox(GameView gameView, String title, String description, String selectionTitle,
@@ -1839,21 +1924,24 @@ public class GameView {
             private final String title;
             private final String[] items;
             private final int fontSize;
+            private int selectedItem;
             private final Color markerFont;
             private final Color markerHighlight;
             private final Color markerRectangle;
             private final Color frameAndTitle;
+
             private final int lineWeight;
             private final int titleHeight;
             private final int heightOfMarkerField;
             private final int heightOfMarkerBox;
             private final int height;
+            private int widthOfMarkerField;
             private final int width;
+
             private final java.awt.Rectangle[] markerBounds;
             private final java.awt.Rectangle upBounds;
             private final java.awt.Rectangle downBounds;
-            private int selectedItem;
-            private int widthOfMarkerField;
+
             private int x;
             private int xLine;
             private int y;
@@ -2137,9 +2225,9 @@ public class GameView {
 
     private static class SimpleBox extends java.awt.Rectangle {
         public final String text;
-        private final int fontSize;
         public boolean isHighlighted;
         public boolean isQuitBox;
+        private final int fontSize;
 
         private SimpleBox(String text, int x, int y, int width, int height, boolean isQuitBox) {
             super(x, y, width, height);
@@ -2203,7 +2291,7 @@ public class GameView {
     }
 
     private static class Version {
-        private final static String LAST_CHANGE = "2022-03-23";
+        private final static String LAST_CHANGE = "2022-05-09";
         private final static LocalDate DATE = LocalDate.parse(LAST_CHANGE);
         private final static String VERSION = LAST_CHANGE.replaceAll("-", ".");
         private final static String VERSION_SHORT = VERSION.substring(0, 6);

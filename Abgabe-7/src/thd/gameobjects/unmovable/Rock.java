@@ -1,9 +1,10 @@
-package thd.gameobjects.movable;
+package thd.gameobjects.unmovable;
 
 import thd.game.managers.GamePlayManager;
 import thd.game.utilities.BulletRight;
 import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.CollidableGameObject;
+import thd.gameobjects.movable.Rover;
 import thd.gameview.GameView;
 
 import java.awt.*;
@@ -11,7 +12,7 @@ import java.awt.*;
 /**
  * Rock which is in the way of the Rover. It can be destroyed by the BulletRight.
  */
-public class Rock extends CollidableGameObject implements AutoMovable {
+public class Rock extends CollidableGameObject {
 
 
     /**
@@ -24,7 +25,7 @@ public class Rock extends CollidableGameObject implements AutoMovable {
         super(gameView, gamePlayManager);
         width = 40;
         height = 40;
-        position.x = GameView.WIDTH;
+        position.x = GameView.WIDTH -50;
         position.y = GameView.HEIGHT - 50;
         speedInPixel = 3;
     }
@@ -49,12 +50,6 @@ public class Rock extends CollidableGameObject implements AutoMovable {
         if (position.x < 0) {
             gamePlayManager.destroy(this);
         }
-
-    }
-
-    @Override
-    public void updatePosition() {
-        position.left(speedInPixel);
     }
 
     @Override

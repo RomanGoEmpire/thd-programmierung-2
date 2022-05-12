@@ -56,4 +56,12 @@ public abstract class CollidableGameObject extends GameObject {
      * @param other The other GameObject that is involved in the collision.
      */
     public abstract void reactToCollision(CollidableGameObject other);
+
+    @Override
+    public void worldHasMoved(double shiftX, double shiftY) {
+        super.worldHasMoved(shiftX, shiftY);
+        hitBox.x -= shiftX;
+        hitBox.y -= shiftY;
+    }
+
 }

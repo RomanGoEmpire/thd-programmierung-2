@@ -4,7 +4,7 @@ import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.Position;
-import thd.gameobjects.movable.Rock;
+import thd.gameobjects.unmovable.Rock;
 import thd.gameobjects.movable.Rover;
 import thd.gameview.GameView;
 
