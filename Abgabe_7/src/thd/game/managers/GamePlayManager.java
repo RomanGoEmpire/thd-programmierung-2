@@ -3,7 +3,6 @@ package thd.game.managers;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
 import thd.gameobjects.movable.FloorBomb;
-import thd.gameobjects.unmovable.Rock;
 import thd.gameobjects.movable.ufo.Ufo;
 import thd.gameview.GameView;
 

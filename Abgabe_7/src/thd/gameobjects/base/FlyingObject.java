@@ -12,7 +12,6 @@ public abstract class FlyingObject extends CollidableGameObject {
 
     protected Position targetPosition;
     protected boolean isAtTargetPosition;
-    protected Random random;
 
     /**
      * Initializes the FlyingObject.
@@ -22,7 +21,6 @@ public abstract class FlyingObject extends CollidableGameObject {
      */
     public FlyingObject(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
-        random = new Random();
     }
 
     protected void generateRandomSpawnPosition() {

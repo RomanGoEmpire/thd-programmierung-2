@@ -4,8 +4,7 @@ import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.GameObject;
 import thd.gameview.GameView;
 
-import java.awt.*;
-import java.util.Random;
+import java.awt.Color;
 
 public class Spawn extends GameObject {
     /**
