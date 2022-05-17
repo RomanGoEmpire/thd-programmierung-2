@@ -1,8 +1,7 @@
 package thd.gameobjects.unmovable;
 
 import thd.game.managers.GamePlayManager;
-import thd.game.utilities.BulletRight;
-import thd.gameobjects.base.AutoMovable;
+import thd.gameobjects.movable.BulletRight;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.movable.Rover;
 import thd.gameview.GameView;
@@ -25,7 +24,7 @@ public class Rock extends CollidableGameObject {
         super(gameView, gamePlayManager);
         width = 40;
         height = 40;
-        position.x = GameView.WIDTH -50;
+        position.x = GameView.WIDTH;
         position.y = GameView.HEIGHT - 50;
         speedInPixel = 3;
     }

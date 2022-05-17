@@ -6,7 +6,7 @@ import thd.gameobjects.base.GameObject;
 import thd.gameobjects.movable.Rover;
 import thd.gameobjects.movable.ufo.Triangle;
 import thd.gameobjects.unmovable.Rock;
-import thd.gameobjects.unmovable.newCity;
+import thd.gameobjects.unmovable.Spawn;
 import thd.gameview.GameView;
 
 import java.util.ArrayList;
@@ -26,8 +26,7 @@ class GameObjectManager {
         toAdd = new ArrayList<>();
         toRemove = new ArrayList<>();
         rover = new Rover(gameView, gamePlayManager);
-        gameObjects.add(new newCity(gameView,gamePlayManager,0.3));
-        gameObjects.add(new newCity(gameView, gamePlayManager,0.8));
+        gameObjects.add(new Spawn(gameView, gamePlayManager));
         gameObjects.add(new Triangle(gameView, gamePlayManager));
         gameObjects.add(rover);
         gameObjects.add(new Rock(gameView, gamePlayManager));
@@ -61,7 +60,6 @@ class GameObjectManager {
         }
     }
 
-
     /**
      * Adds object to gameObjects.
      *
@@ -78,6 +76,9 @@ class GameObjectManager {
      */
     void removeGameObject(GameObject gameObject) {
         toRemove.add(gameObject);
+    }
+
+    private void addCity(){
     }
 
     private void modifyGameObjectsList() {

@@ -3,6 +3,8 @@ package thd.gameobjects.base;
 import thd.game.managers.GamePlayManager;
 import thd.gameview.GameView;
 
+import java.util.Random;
+
 /**
  * Upperclass for game objects which will get displayed on {@link GameView}.
  */
@@ -20,6 +22,7 @@ public abstract class GameObject {
     /**
      * orientation of the object.
      */
+    protected final Random random;
     public double rotation;
     /**
      * size of the object. 1 is original scale.
@@ -47,6 +50,7 @@ public abstract class GameObject {
     public GameObject(GameView gameView, GamePlayManager gamePlayManager) {
         this.gameView = gameView;
         this.gamePlayManager = gamePlayManager;
+        random = new Random();
         position = new Position(0, 0);
     }
 

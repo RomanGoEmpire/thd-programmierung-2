@@ -1,10 +1,9 @@
-package thd.game.utilities;
+package thd.gameobjects.movable;
 
 import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.Position;
-import thd.gameobjects.movable.Rover;
 import thd.gameview.GameView;
 
 import java.awt.*;

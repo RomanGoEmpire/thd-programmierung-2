@@ -26,6 +26,7 @@ public class GamePlayManager {
 
     void updateGamePlay() {
         spawnAndDestroyUFOs();
+        spawnFloorBomb();
         gameObjectManager.moveWorld(1, 0);
     }
 
@@ -40,6 +41,9 @@ public class GamePlayManager {
             objects.add(ufo);
             spawn(objects.get(objects.size() - 1));
         }
+
+    }
+    private void spawnFloorBomb(){
         if (!gameView.timerIsActive("floor-bomb", this)) {
             gameView.activateTimer("floor-bomb", this, 10000);
             FloorBomb floorBomb = new FloorBomb(gameView, this);

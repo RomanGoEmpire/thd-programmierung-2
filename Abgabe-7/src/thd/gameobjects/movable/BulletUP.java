@@ -1,4 +1,4 @@
-package thd.game.utilities;
+package thd.gameobjects.movable;
 
 import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.AutoMovable;

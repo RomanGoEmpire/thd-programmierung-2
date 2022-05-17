@@ -1,8 +1,6 @@
 package thd.gameobjects.movable;
 
 import thd.game.managers.GamePlayManager;
-import thd.game.utilities.BulletRight;
-import thd.game.utilities.BulletUP;
 import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.Position;
@@ -81,12 +79,7 @@ public class Rover extends CollidableGameObject implements AutoMovable {
 
     @Override
     public void addToCanvas() {
-        if (position.x < 100) {
-            position.right(speedInPixel);
-        }
-        if (position.x >= 300) {
-            position.left(speedInPixel);
-        }
+        gameView.addTextToCanvas(Math.round(position.x) + "," + Math.round(position.y), 0, 0, 20, Color.white, 0);
         if (shooting) {
             gameView.addTextToCanvas("O", position.x, position.y, 50, Color.white, 0);
             shooting = false;
@@ -100,6 +93,12 @@ public class Rover extends CollidableGameObject implements AutoMovable {
 
     @Override
     public void updatePosition() {
+        if (position.x < 100) {
+            position.right(speedInPixel);
+        }
+        if (position.x >= 300) {
+            position.left(speedInPixel);
+        }
         if (jumping) {
             executeJump();
         }
@@ -156,7 +155,7 @@ public class Rover extends CollidableGameObject implements AutoMovable {
     private void executeJump() {
         if (jumpUP) {
             position.up(speedInPixel);
-            if (position.y < 400) {
+            if (position.y < 420) {
                 jumpUP = false;
             }
         } else {
