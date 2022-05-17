@@ -79,7 +79,6 @@ public class Rover extends CollidableGameObject implements AutoMovable {
 
     @Override
     public void addToCanvas() {
-        gameView.addTextToCanvas(Math.round(position.x) + "," + Math.round(position.y), 0, 0, 20, Color.white, 0);
         if (shooting) {
             gameView.addTextToCanvas("O", position.x, position.y, 50, Color.white, 0);
             shooting = false;

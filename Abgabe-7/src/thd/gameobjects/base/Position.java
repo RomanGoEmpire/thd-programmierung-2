@@ -13,7 +13,7 @@ import java.util.Objects;
  * @see GameView
  */
 
-public class Position implements Cloneable {
+public class Position implements Cloneable, Comparable<Position> {
     /**
      * x-coordinate.
      */
@@ -146,6 +146,13 @@ public class Position implements Cloneable {
         } catch (CloneNotSupportedException ignored) {
         }
         return copy;
+    }
+
+
+    @Override
+    public int compareTo(Position o) {
+        Position comparator = new Position();
+        return Double.compare(this.distance(comparator), o.distance(comparator));
     }
 }
 
