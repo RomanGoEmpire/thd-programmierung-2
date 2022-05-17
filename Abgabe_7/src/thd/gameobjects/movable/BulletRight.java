@@ -4,7 +4,6 @@ import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.Position;
-import thd.gameobjects.unmovable.Rock;
 import thd.gameview.GameView;
 
 import java.awt.*;
@@ -12,7 +11,7 @@ import java.awt.*;
 /**
  * BulletRight gets shot by the Rover. It moves in the right direction.
  */
-public class BulletRight extends CollidableGameObject implements AutoMovable {
+class BulletRight extends CollidableGameObject implements AutoMovable {
 
     private final Rover rover;
     private final double startPoint;
@@ -25,7 +24,7 @@ public class BulletRight extends CollidableGameObject implements AutoMovable {
      * @param position        is the position the Bullet should spawn
      * @param rover           helps the Bullet to get destroyed at the right position
      */
-    public BulletRight(GameView gameView, GamePlayManager gamePlayManager, Position position, Rover rover) {
+    BulletRight(GameView gameView, GamePlayManager gamePlayManager, Position position, Rover rover) {
         super(gameView, gamePlayManager);
         this.position.x = position.x + 100;
         this.position.y = position.y;

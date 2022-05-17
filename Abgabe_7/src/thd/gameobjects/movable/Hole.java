@@ -1,17 +1,20 @@
-package thd.gameobjects.unmovable;
+package thd.gameobjects.movable;
 
 import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameview.GameView;
 
-public class Hole extends CollidableGameObject {
+/**
+ * Hole Rover can fall into.
+ */
+class Hole extends CollidableGameObject {
     /**
      * Crates a new GameObject.
      *
      * @param gameView        Window to show the GameObject on.
      * @param gamePlayManager Controls the gameplay.
      */
-    public Hole(GameView gameView, GamePlayManager gamePlayManager) {
+    Hole(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
         width = 80;
         height = 20;

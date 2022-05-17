@@ -3,7 +3,7 @@ package thd.game.managers;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
 import thd.gameobjects.movable.FloorBomb;
-import thd.gameobjects.movable.ufo.Ufo;
+import thd.gameobjects.movable.Ufo;
 import thd.gameview.GameView;
 
 import java.util.LinkedList;
@@ -42,7 +42,8 @@ public class GamePlayManager {
         }
 
     }
-    private void spawnFloorBomb(){
+
+    private void spawnFloorBomb() {
         if (!gameView.timerIsActive("floor-bomb", this)) {
             gameView.activateTimer("floor-bomb", this, 10000);
             FloorBomb floorBomb = new FloorBomb(gameView, this);
@@ -58,6 +59,15 @@ public class GamePlayManager {
      */
     public void spawn(GameObject gameObject) {
         gameObjectManager.addGameObject(gameObject);
+    }
+
+    /**
+     * adds the passed object to the List, which spawns all MoveAble objects.
+     *
+     * @param gameObject is the passed object
+     */
+    public void spawnBackground(GameObject gameObject) {
+        gameObjectManager.addBackgroundGameObject(gameObject);
     }
 
     /**

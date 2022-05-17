@@ -3,8 +3,6 @@ package thd.gameobjects.base;
 import thd.game.managers.GamePlayManager;
 import thd.gameview.GameView;
 
-import java.util.Random;
-
 /**
  * Is an Object which moves in the upper half of the screen and tries to shoot the Rover.
  */

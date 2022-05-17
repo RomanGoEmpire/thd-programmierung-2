@@ -4,7 +4,6 @@ import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.Position;
-import thd.gameobjects.movable.ufo.Ufo;
 import thd.gameview.GameView;
 
 import java.awt.*;
@@ -13,7 +12,7 @@ import java.awt.*;
  * BulletUp which gets shot by the Rover. It moves up. If it hits any Ufos or BulletDown they get destroyed.
  */
 
-public class BulletUP extends CollidableGameObject implements AutoMovable {
+class BulletUP extends CollidableGameObject implements AutoMovable {
 
     /**
      * Initializes the BulletUP.
@@ -22,7 +21,7 @@ public class BulletUP extends CollidableGameObject implements AutoMovable {
      * @param gamePlayManager is the manager, which makes sure that the objects are spawned and destroyed.
      * @param position        is the position the Bullet should spawn
      */
-    public BulletUP(GameView gameView, GamePlayManager gamePlayManager, Position position) {
+    BulletUP(GameView gameView, GamePlayManager gamePlayManager, Position position) {
         super(gameView, gamePlayManager);
         this.position.x = position.x + 50;
         this.position.y = position.y;

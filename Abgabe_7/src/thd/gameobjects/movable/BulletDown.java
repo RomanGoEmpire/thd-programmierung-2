@@ -12,7 +12,7 @@ import java.awt.*;
  * Bulletdown gets shot by the Ufo. If it hits the Rover it will lose a life.
  */
 
-public class BulletDown extends CollidableGameObject implements AutoMovable {
+class BulletDown extends CollidableGameObject implements AutoMovable {
 
     /**
      * Initializes the BulletRight.
@@ -21,7 +21,7 @@ public class BulletDown extends CollidableGameObject implements AutoMovable {
      * @param gamePlayManager is the manager, which makes sure that the objects are spawned and destroyed.
      * @param position        is the position the Bullet should spawn
      */
-    public BulletDown(GameView gameView, GamePlayManager gamePlayManager, Position position) {
+    BulletDown(GameView gameView, GamePlayManager gamePlayManager, Position position) {
         super(gameView, gamePlayManager);
         this.position.x = position.x;
         this.position.y = position.y;

@@ -1,11 +1,14 @@
-package thd.gameobjects.unmovable;
+package thd.gameobjects.movable;
 
 import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.GameObject;
 import thd.gameview.GameView;
 
-import java.awt.Color;
+import java.awt.*;
 
+/**
+ * Original 0,0.
+ */
 public class Spawn extends GameObject {
     /**
      * Initializes the GameObject.
@@ -19,11 +22,11 @@ public class Spawn extends GameObject {
 
     @Override
     public void updateStatus() {
-        if (position.x % 200 == 0) {
-            gamePlayManager.spawn(new City(gameView, gamePlayManager, scaleFactor(), GameView.WIDTH));
+        if (position.x % 400 == 0) {
+            gamePlayManager.spawnBackground(new City(gameView, gamePlayManager, scaleFactor(), GameView.WIDTH));
         }
-        if(position.x % 1000 == 0){
-            gamePlayManager.spawn(new Rock(gameView,gamePlayManager));
+        if (position.x % 1000 == 0) {
+            gamePlayManager.spawn(new Rock(gameView, gamePlayManager));
         }
     }
 

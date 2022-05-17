@@ -4,9 +4,8 @@ import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.movable.Rover;
-import thd.gameobjects.movable.ufo.Triangle;
-import thd.gameobjects.unmovable.Rock;
-import thd.gameobjects.unmovable.Spawn;
+import thd.gameobjects.movable.Spawn;
+import thd.gameobjects.movable.Triangle;
 import thd.gameview.GameView;
 
 import java.util.ArrayList;
@@ -18,18 +17,21 @@ class GameObjectManager {
     private final LinkedList<GameObject> gameObjects;
     private final ArrayList<GameObject> toAdd;
     private final ArrayList<GameObject> toRemove;
-    Rover rover;
+    private final ArrayList<GameObject> toAddBackground;
 
     GameObjectManager(GameView gameView, GamePlayManager gamePlayManager) {
         this.gameView = gameView;
         gameObjects = new LinkedList<>();
+
         toAdd = new ArrayList<>();
+        toAddBackground = new ArrayList<>();
         toRemove = new ArrayList<>();
-        rover = new Rover(gameView, gamePlayManager);
+
+
         gameObjects.add(new Spawn(gameView, gamePlayManager));
         gameObjects.add(new Triangle(gameView, gamePlayManager));
-        gameObjects.add(rover);
-        gameObjects.add(new Rock(gameView, gamePlayManager));
+        gameObjects.add(new Rover(gameView, gamePlayManager));
+
     }
 
     void updateGameObjects() {
@@ -78,12 +80,17 @@ class GameObjectManager {
         toRemove.add(gameObject);
     }
 
-    private void addCity(){
+    void addBackgroundGameObject(GameObject gameObject) {
+        toAddBackground.add(gameObject);
     }
 
     private void modifyGameObjectsList() {
+        for (GameObject o : toAddBackground) {
+            gameObjects.addFirst(o);
+        }
         gameObjects.addAll(toAdd);
         gameObjects.removeAll(toRemove);
+        toAddBackground.clear();
         toAdd.clear();
         toRemove.clear();
 
@@ -98,5 +105,9 @@ class GameObjectManager {
                 gameObject.worldHasMoved(shiftX, shiftY);
             }
         }
+    }
+
+    LinkedList<GameObject> getGameObjects() {
+        return gameObjects;
     }
 }

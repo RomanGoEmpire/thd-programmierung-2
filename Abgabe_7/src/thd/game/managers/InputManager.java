@@ -30,8 +30,8 @@ class InputManager {
 
     private void processKeyCode(int keyCode) {
         switch (keyCode) {
-            case KeyEvent.VK_D:
-                rover.shoot();
+            case KeyEvent.VK_UP:
+                rover.jump();
                 break;
             case KeyEvent.VK_LEFT:
                 rover.left();
@@ -40,7 +40,7 @@ class InputManager {
                 rover.right();
                 break;
             case KeyEvent.VK_SPACE:
-                rover.jump();
+                rover.shoot();
                 break;
             default:
                 break;

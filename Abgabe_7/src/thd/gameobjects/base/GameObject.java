@@ -23,7 +23,7 @@ public abstract class GameObject {
      * orientation of the object.
      */
     protected final Random random;
-    public double rotation;
+    protected double rotation;
     /**
      * size of the object. 1 is original scale.
      */
@@ -75,6 +75,7 @@ public abstract class GameObject {
 
     /**
      * corrects position.
+     *
      * @param shiftX amount of shift in x direction.
      * @param shiftY amount of shift in y direction.
      */

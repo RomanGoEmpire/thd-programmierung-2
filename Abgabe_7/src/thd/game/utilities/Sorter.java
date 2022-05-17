@@ -1,12 +1,12 @@
 package thd.game.utilities;
 
 import thd.gameobjects.base.Position;
+import thd.gameview.GameView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import thd.gameview.GameView;
-
-import java.util.*;
+import java.util.Comparator;
+import java.util.Random;
 
 /**
  * Sorter-Class.

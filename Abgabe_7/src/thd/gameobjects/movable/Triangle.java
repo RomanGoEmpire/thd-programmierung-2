@@ -1,7 +1,6 @@
-package thd.gameobjects.movable.ufo;
+package thd.gameobjects.movable;
 
 import thd.game.managers.GamePlayManager;
-import thd.gameobjects.movable.BulletUP;
 import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.FlyingObject;

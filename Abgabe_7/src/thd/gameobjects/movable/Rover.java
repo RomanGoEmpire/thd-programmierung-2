@@ -6,8 +6,6 @@ import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.Position;
 import thd.gameview.GameView;
 
-import java.awt.*;
-
 /**
  * An object which can be controlled by the Player. It can drive and shoot.
  */
@@ -15,20 +13,15 @@ public class Rover extends CollidableGameObject implements AutoMovable {
 
 
     private final double shotsPerSecondUp;
-    private Status status;
-    private String roverImage;
-
-    private enum Status {STANDARD, DAMAGED}
-
     /**
      * the Bullet right is only allowed to be shot if there is no bullet already flying.
      */
 
-    public boolean allowedToShoot;
+    boolean allowedToShoot;
+    private Status status;
+    private String roverImage;
     private boolean jumpUP;
-    private boolean shooting;
     private boolean jumping;
-
     /**
      * An Rover is generated.
      *
@@ -42,7 +35,6 @@ public class Rover extends CollidableGameObject implements AutoMovable {
         speedInPixel = 1.5;
         shotsPerSecondUp = 5;
         size = 0.1;
-        shooting = false;
         allowedToShoot = true;
         jumpUP = true;
         status = Status.STANDARD;
@@ -79,15 +71,10 @@ public class Rover extends CollidableGameObject implements AutoMovable {
 
     @Override
     public void addToCanvas() {
-        if (shooting) {
-            gameView.addTextToCanvas("O", position.x, position.y, 50, Color.white, 0);
-            shooting = false;
-        } else {
-            gameView.addImageToCanvas(roverImage, position.x, position.y, size, 0);
-            gameView.addImageToCanvas("tire.png", position.x + 32, position.y + 24, size, rotation * 2);
-            gameView.addImageToCanvas("tire.png", position.x + 2, position.y + 24, size, 150 + rotation * 2);
-            gameView.addImageToCanvas("tire.png", position.x + 100, position.y + 24, size, 100 + rotation * 2);
-        }
+        gameView.addImageToCanvas(roverImage, position.x, position.y, size, 0);
+        gameView.addImageToCanvas("tire.png", position.x + 32, position.y + 24, size, rotation * 2);
+        gameView.addImageToCanvas("tire.png", position.x + 2, position.y + 24, size, 150 + rotation * 2);
+        gameView.addImageToCanvas("tire.png", position.x + 100, position.y + 24, size, 100 + rotation * 2);
     }
 
     @Override
@@ -165,4 +152,6 @@ public class Rover extends CollidableGameObject implements AutoMovable {
             }
         }
     }
+
+    private enum Status {STANDARD, DAMAGED}
 }
