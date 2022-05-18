@@ -152,8 +152,8 @@ public class Position implements Cloneable, Comparable<Position> {
 
     @Override
     public int compareTo(Position o) {
-        Position zero = new Position();
-        return Double.compare(this.distance(zero), o.distance(zero));
+        Position comparator = new Position();
+        return Double.compare(this.distance(comparator), o.distance(comparator));
     }
 }
 
