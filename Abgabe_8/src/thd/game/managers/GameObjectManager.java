@@ -3,9 +3,11 @@ package thd.game.managers;
 import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.GameObject;
+import thd.gameobjects.movable.City;
 import thd.gameobjects.movable.Rover;
 import thd.gameobjects.movable.Spawn;
 import thd.gameobjects.movable.Triangle;
+import thd.gameobjects.unmovable.Background;
 import thd.gameview.GameView;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ class GameObjectManager {
         toAdd = new ArrayList<>();
         toAddBackground = new ArrayList<>();
         toRemove = new ArrayList<>();
-
+        gameObjects.add(new Background(gameView,gamePlayManager));
         gameObjects.add(new Spawn(gameView, gamePlayManager));
         gameObjects.add(new Triangle(gameView, gamePlayManager));
         gameObjects.add(new Rover(gameView, gamePlayManager));
@@ -35,8 +37,9 @@ class GameObjectManager {
 
     void updateGameObjects() {
         modifyGameObjectsList();
-        gameView.addImageToCanvas("background.png", 0, 0, 1, 0);
+
         ArrayList<CollidableGameObject> collidables = new ArrayList<>(gameObjects.size());
+        int counter = 0;
         for (GameObject gameObject : gameObjects) {
             gameObject.updateStatus();
             if (gameObject instanceof AutoMovable) {
@@ -84,14 +87,21 @@ class GameObjectManager {
     }
 
     private void modifyGameObjectsList() {
-        for (GameObject o : toAddBackground) {
-            gameObjects.addFirst(o);
+        if (!toAddBackground.isEmpty()) {
+            for (GameObject o : toAddBackground) {
+                if(o.getClass() == City.class){
+                    City city = (City) o;
+                    gameObjects.add(city.gameObjectIndex, o);
+                }
+            }
         }
         gameObjects.addAll(toAdd);
         gameObjects.removeAll(toRemove);
         toAddBackground.clear();
         toAdd.clear();
         toRemove.clear();
+
+        System.out.println(gameObjects.size());
 
         if (gameObjects.size() > 2000) {
             throw new TooManyGameObjectsException("Too Many Objects");
