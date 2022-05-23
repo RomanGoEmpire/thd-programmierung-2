@@ -7,12 +7,14 @@ import thd.gameview.GameView;
 /**
  * City which is displayed in the background.
  */
-class City extends GameObject {
+public class City extends GameObject {
 
     private final double scaleFactor;
     private final double counterMovement;
     private final double positionToDestroy;
     private final String cityPicture;
+
+    public final int gameObjectIndex;
 
     /**
      * Initializes the GameObject.
@@ -22,7 +24,7 @@ class City extends GameObject {
      * @param scaleFactor     is the size.
      * @param positionX       is the position.
      */
-    City(GameView gameView, GamePlayManager gamePlayManager, double scaleFactor, double positionX) {
+    public City(GameView gameView, GamePlayManager gamePlayManager, double scaleFactor, double positionX) {
         super(gameView, gamePlayManager);
         position.x = positionX;
         this.scaleFactor = scaleFactor;
@@ -30,6 +32,7 @@ class City extends GameObject {
         counterMovement = 1 - scaleFactor;
         positionToDestroy = calculateHeightOrWidth(1439);
         cityPicture = random.nextBoolean() ? "city.png" : "city2.png";
+        gameObjectIndex = (int) (scaleFactor * 10) - 5;
     }
 
     @Override
