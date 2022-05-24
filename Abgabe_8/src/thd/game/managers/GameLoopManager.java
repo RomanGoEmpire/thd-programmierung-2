@@ -1,7 +1,5 @@
 package thd.game.managers;
 
-
-import thd.gameobjects.movable.Rover;
 import thd.gameview.GameView;
 
 /**
@@ -23,7 +21,7 @@ public class GameLoopManager {
         gamePlayManager = new GamePlayManager(gameView);
         gameObjectManager = new GameObjectManager(gameView, gamePlayManager);
         gamePlayManager.setGameObjectManager(gameObjectManager);
-        inputManager = new InputManager(gameView, (Rover) gameObjectManager.getGameObjects().get(gameObjectManager.getGameObjects().size() - 1));
+        inputManager = new InputManager(gameView,gameObjectManager.rover);
 
         gameView.setWindowTitle("Moon Patrol");
         gameView.setStatusText("Gerloff Roman - Java Programmierung SS 2022");

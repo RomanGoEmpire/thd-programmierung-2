@@ -1,12 +1,12 @@
 package thd.game.managers;
 
+import thd.game.level.Level;
+import thd.game.level.Level1;
+import thd.game.level.Level2;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
-import thd.gameobjects.movable.FloorBomb;
-import thd.gameobjects.movable.Ufo;
+import thd.gameobjects.movable.*;
 import thd.gameview.GameView;
-
-import java.util.LinkedList;
 
 /**
  * This class makes sure that all objects are spawning and getting destroyed afterwards.
@@ -15,42 +15,72 @@ import java.util.LinkedList;
 public class GamePlayManager {
 
     private final GameView gameView;
-    private final LinkedList<GameObject> objects;
     private GameObjectManager gameObjectManager;
+
+    private final LevelManager levelManager;
+
+    private Level currentLevel;
 
     GamePlayManager(GameView gameView) {
         this.gameView = gameView;
-        objects = new LinkedList<>();
+        levelManager = new LevelManager(Level.Difficulty.STANDARD);
+        currentLevel = levelManager.levels.getFirst();
     }
 
     void updateGamePlay() {
-        spawnAndDestroyUFOs();
-        spawnFloorBomb();
+        if (!gameView.timerIsActive("level", this)) {
+            gameView.activateTimer("level", this, 10000);
+            if(currentLevel.name.equals("last")){
+                levelManager.resetLevelCounter();
+            }
+            currentLevel = levelManager.nextLevel();
+            setGameObjectManager(gameObjectManager);
+        }
         gameObjectManager.moveWorld(2, 0);
+    }
+
+    private void initializeLevel() {
+        for (GameObject o : gameObjectManager.getGameObjects()) {
+            if (!(o instanceof Rover)) {
+                destroy(o);
+            }
+        }
+        if (currentLevel.getClass() == Level1.class) {
+
+            gameObjectManager.addGameObject(gameObjectManager.rover);
+            gameObjectManager.addGameObject(new Ufo(gameView, this, new Position(100, 100)));
+            gameObjectManager.addGameObject(new Spawn(gameView, this, currentLevel.backgroundString));
+        } else if (currentLevel.getClass() == Level2.class) {
+
+            gameObjectManager.addGameObject(gameObjectManager.rover);
+            gameObjectManager.addGameObject(new Triangle(gameView, this));
+            gameObjectManager.addGameObject(new Spawn(gameView, this, currentLevel.backgroundString));
+        }
     }
 
     void setGameObjectManager(GameObjectManager gameObjectManager) {
         this.gameObjectManager = gameObjectManager;
+        initializeLevel();
     }
-
-    private void spawnAndDestroyUFOs() {
+/*
+    private void spawnAndDestroyUFOs(int timeBetweenSpawns) {
         if (!gameView.timerIsActive("spawn", this)) {
-            gameView.activateTimer("spawn", this, 3000);
+            gameView.activateTimer("spawn", this, timeBetweenSpawns);
             Ufo ufo = new Ufo(gameView, this, new Position(100, 100));
-            objects.add(ufo);
-            spawn(objects.get(objects.size() - 1));
+            spawn(ufo);
         }
 
     }
 
-    private void spawnFloorBomb() {
+    private void spawnFloorBomb(int time) {
         if (!gameView.timerIsActive("floor-bomb", this)) {
-            gameView.activateTimer("floor-bomb", this, 10000);
+            gameView.activateTimer("floor-bomb", this, time);
             FloorBomb floorBomb = new FloorBomb(gameView, this);
-            objects.add(floorBomb);
-            spawn(objects.get(objects.size() - 1));
+            spawn(floorBomb);
         }
     }
+
+ */
 
     /**
      * adds the passed object to the List, which spawns all MoveAble objects.

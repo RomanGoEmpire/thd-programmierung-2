@@ -3,35 +3,27 @@ package thd.game.managers;
 import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.GameObject;
-import thd.gameobjects.movable.City;
+import thd.gameobjects.movable.MovableBackground;
 import thd.gameobjects.movable.Rover;
-import thd.gameobjects.movable.Spawn;
-import thd.gameobjects.movable.Triangle;
-import thd.gameobjects.unmovable.Background;
 import thd.gameview.GameView;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 class GameObjectManager {
-
-    private final GameView gameView;
     private final LinkedList<GameObject> gameObjects;
     private final ArrayList<GameObject> toAdd;
     private final ArrayList<GameObject> toRemove;
     private final ArrayList<GameObject> toAddBackground;
 
-    GameObjectManager(GameView gameView, GamePlayManager gamePlayManager) {
-        this.gameView = gameView;
-        gameObjects = new LinkedList<>();
+    Rover rover;
 
+    GameObjectManager(GameView gameView, GamePlayManager gamePlayManager) {
+        gameObjects = new LinkedList<>();
         toAdd = new ArrayList<>();
         toAddBackground = new ArrayList<>();
         toRemove = new ArrayList<>();
-        gameObjects.add(new Background(gameView,gamePlayManager));
-        gameObjects.add(new Spawn(gameView, gamePlayManager));
-        gameObjects.add(new Triangle(gameView, gamePlayManager));
-        gameObjects.add(new Rover(gameView, gamePlayManager));
+        rover = new Rover(gameView, gamePlayManager);
 
     }
 
@@ -39,7 +31,6 @@ class GameObjectManager {
         modifyGameObjectsList();
 
         ArrayList<CollidableGameObject> collidables = new ArrayList<>(gameObjects.size());
-        int counter = 0;
         for (GameObject gameObject : gameObjects) {
             gameObject.updateStatus();
             if (gameObject instanceof AutoMovable) {
@@ -89,9 +80,11 @@ class GameObjectManager {
     private void modifyGameObjectsList() {
         if (!toAddBackground.isEmpty()) {
             for (GameObject o : toAddBackground) {
-                if(o.getClass() == City.class){
-                    City city = (City) o;
+                if (o.getClass() == MovableBackground.class) {
+                    MovableBackground city = (MovableBackground) o;
                     gameObjects.add(city.gameObjectIndex, o);
+                }else {
+                    gameObjects.addFirst(o);
                 }
             }
         }
@@ -100,8 +93,6 @@ class GameObjectManager {
         toAddBackground.clear();
         toAdd.clear();
         toRemove.clear();
-
-        System.out.println(gameObjects.size());
 
         if (gameObjects.size() > 2000) {
             throw new TooManyGameObjectsException("Too Many Objects");

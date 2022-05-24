@@ -10,14 +10,18 @@ import java.awt.*;
  * Original 0,0.
  */
 public class Spawn extends GameObject {
+    private final String cityImage;
+
     /**
      * Initializes the GameObject.
      *
      * @param gameView        is the window it is displayed.
      * @param gamePlayManager is the manager, which makes sure that the objects are spawned and destroyed.
+     * @param cityImage       is the name of the Picture.
      */
-    public Spawn(GameView gameView, GamePlayManager gamePlayManager) {
+    public Spawn(GameView gameView, GamePlayManager gamePlayManager, String cityImage) {
         super(gameView, gamePlayManager);
+        this.cityImage = cityImage;
     }
 
     @Override
@@ -27,7 +31,7 @@ public class Spawn extends GameObject {
             gamePlayManager.spawn(new Floor(gameView, gamePlayManager, offset));
         }
         if (position.x % 400 == 0) {
-            gamePlayManager.spawnBackground(new City(gameView, gamePlayManager, scaleFactor(), GameView.WIDTH));
+            gamePlayManager.spawnBackground(new MovableBackground(gameView, gamePlayManager, scaleFactor(), GameView.WIDTH, cityImage));
         }
         if (position.x % 1000 == 0) {
             gamePlayManager.spawn(new Rock(gameView, gamePlayManager));

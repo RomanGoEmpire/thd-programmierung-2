@@ -5,15 +5,18 @@ import thd.gameobjects.base.GameObject;
 import thd.gameview.GameView;
 
 /**
- * City which is displayed in the background.
+ * Background.
  */
-public class City extends GameObject {
+public class MovableBackground extends GameObject {
 
     private final double scaleFactor;
     private final double counterMovement;
     private final double positionToDestroy;
     private final String cityPicture;
 
+    /**
+     * Index for gameObjects.
+     */
     public final int gameObjectIndex;
 
     /**
@@ -23,15 +26,24 @@ public class City extends GameObject {
      * @param gamePlayManager is the manager, which makes sure that the objects are spawned and destroyed.
      * @param scaleFactor     is the size.
      * @param positionX       is the position.
+     * @param cityPicture     is the Png.
      */
-    public City(GameView gameView, GamePlayManager gamePlayManager, double scaleFactor, double positionX) {
+    public MovableBackground(GameView gameView, GamePlayManager gamePlayManager, double scaleFactor, double positionX, String cityPicture) {
         super(gameView, gamePlayManager);
         position.x = positionX;
         this.scaleFactor = scaleFactor;
-        position.y = GameView.HEIGHT - calculateHeightOrWidth(644);
+
+        if (cityPicture.equals("city.png")) {
+            position.y = GameView.HEIGHT - calculateHeightOrWidth(644);
+            positionToDestroy = calculateHeightOrWidth(1439);
+        } else if (cityPicture.equals("canyon.png")) {
+            position.y = GameView.HEIGHT - calculateHeightOrWidth(405);
+            positionToDestroy = calculateHeightOrWidth(1440);
+        } else {
+            positionToDestroy = 0;
+        }
         counterMovement = 1 - scaleFactor;
-        positionToDestroy = calculateHeightOrWidth(1439);
-        cityPicture = random.nextBoolean() ? "city.png" : "city2.png";
+        this.cityPicture = cityPicture;
         gameObjectIndex = (int) (scaleFactor * 10) - 5;
     }
 

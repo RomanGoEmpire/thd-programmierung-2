@@ -15,11 +15,12 @@ class Floor extends CollidableGameObject {
      *
      * @param gameView        Window to show the GameObject on.
      * @param gamePlayManager Controls the gameplay.
+     * @param offset the floor unevenness.
      */
-    public Floor(GameView gameView, GamePlayManager gamePlayManager,double offset) {
+    Floor(GameView gameView, GamePlayManager gamePlayManager, double offset) {
         super(gameView, gamePlayManager);
         position.x = GameView.WIDTH;
-        position.y = GameView.HEIGHT - offset;
+        position.y = GameView.HEIGHT - 30 - offset;
         width = 3;
 
     }
@@ -27,7 +28,7 @@ class Floor extends CollidableGameObject {
     @Override
     protected void initializeHitbox() {
         hitBoxWidth = 30;
-        hitBoxHeight = 3;
+        hitBoxHeight = 30;
         hitBoxOffsetX = 0;
         hitBoxOffsetY = 0;
 

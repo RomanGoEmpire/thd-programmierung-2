@@ -4,14 +4,17 @@ import thd.game.managers.GamePlayManager;
 import thd.gameobjects.base.GameObject;
 import thd.gameview.GameView;
 
-public class Background extends GameObject {
+/**
+ * Unmovable Background.
+ */
+class Stars extends GameObject {
     /**
      * Initializes the GameObject.
      *
      * @param gameView        is the window it is displayed.
      * @param gamePlayManager is the manager, which makes sure that the objects are spawned and destroyed.
      */
-    public Background(GameView gameView, GamePlayManager gamePlayManager) {
+    Stars(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
     }
 

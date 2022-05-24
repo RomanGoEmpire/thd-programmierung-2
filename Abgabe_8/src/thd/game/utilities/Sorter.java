@@ -34,11 +34,11 @@ class Sorter {
     }
 
 
-    void naturalOrder(ArrayList<Position> positions) {
+    private void naturalOrder(ArrayList<Position> positions) {
         Collections.sort(positions);
     }
 
-    void xOrder(ArrayList<Position> positions) {
+    private void xOrder(ArrayList<Position> positions) {
         class Xcompare implements Comparator<Position> {
             @Override
             public int compare(Position o1, Position o2) {
@@ -49,7 +49,7 @@ class Sorter {
         positions.sort(xCompare);
     }
 
-    void yOrder(ArrayList<Position> positions) {
+    private void yOrder(ArrayList<Position> positions) {
         Comparator<Position> xCompare = new Comparator<>() {
             @Override
             public int compare(Position o1, Position o2) {
@@ -59,7 +59,7 @@ class Sorter {
         positions.sort(xCompare);
     }
 
-    void centricOrder(ArrayList<Position> positions) {
+    private void centricOrder(ArrayList<Position> positions) {
         Position centricPoint = new Position(GameView.WIDTH / 2d, GameView.HEIGHT / 2d);
         Comparator<Position> centricComparator = (p1, p2) -> Double.compare(p1.distance(centricPoint), p2.distance(centricPoint));
         positions.sort(centricComparator);
