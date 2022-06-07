@@ -1,6 +1,7 @@
 package thd.game.managers;
 
 import thd.game.level.Level;
+import thd.game.level.Level0;
 import thd.game.level.Level1;
 import thd.game.level.Level2;
 
@@ -15,6 +16,7 @@ class LevelManager {
 
     LevelManager(Level.Difficulty difficulty) {
         levels = new LinkedList<>();
+        levels.add(new Level0(difficulty));
         levels.add(new Level1(difficulty));
         levels.add(new Level2(difficulty));
         currentLevel = 0;
