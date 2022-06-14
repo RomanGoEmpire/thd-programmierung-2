@@ -19,9 +19,14 @@ public class GamePlayManager {
 
     private final GameView gameView;
     /**
-     * is true when the game is over.
+     * lets the game running.
      */
     boolean gameOver;
+    /**
+     * resets the Game if true.
+     */
+    public boolean isGameOver;
+
     private GameObjectManager gameObjectManager;
 
     private final LevelManager levelManager;
@@ -33,34 +38,61 @@ public class GamePlayManager {
         levelManager = new LevelManager(Level.Difficulty.STANDARD);
         currentLevel = levelManager.levels.getFirst();
         gameOver = false;
+        isGameOver = false;
     }
 
     void updateGamePlay() {
-        if (!gameView.timerIsActive("level", this)) {
-            gameView.activateTimer("level", this, 10000);
-            if (currentLevel.name.equals("last")) {
-                levelManager.resetLevelCounter();
+        if (gameOver()) {
+            if (!gameView.alarmIsSet("gameOver", this)) {
+                gameView.setAlarm("gameOver", this, 2000);
+                gameObjectManager.overlay.showMessage("Game Over", 2);
+            } else if (gameView.alarm("gameOver", this)) {
+                initializeGame();
             }
-            currentLevel = levelManager.nextLevel();
-            initializeLevel();
+        } else {
+            if (!gameView.timerIsActive("level", this)) {
+                gameView.activateTimer("level", this, 5000);
+                if (currentLevel.name.equals("District 3")) {
+                    levelManager.resetLevelCounter();
+                }
+                currentLevel = levelManager.nextLevel();
+                initializeLevel();
+            }
+            gameObjectManager.moveWorld(2, 0);
         }
-        gameObjectManager.moveWorld(2, 0);
+    }
+
+    private boolean gameOver() {
+        return isGameOver;
+    }
+
+    private void initializeGame() {
+        isGameOver = false;
+        destroyAll();
+        initializeLevel();
+        currentLevel = levelManager.levels.getFirst();
+        levelManager.resetLevelCounter();
     }
 
     private void initializeLevel() {
-        for (GameObject o : gameObjectManager.gameObjects) {
-            destroy(o);
-        }
+        destroyAll();
         gameObjectManager.addGameObject(new Stars(gameView, this));
         gameObjectManager.addGameObject(gameObjectManager.rover);
+        gameObjectManager.addGameObject(gameObjectManager.overlay);
+        gameObjectManager.overlay.showMessage(currentLevel.name, 2);
         if (currentLevel.getClass() == Level1.class) {
-            gameObjectManager.addGameObject(new MovableBackground(gameView,this,"CityNew.png"));
+            gameObjectManager.addGameObject(new MovableBackground(gameView, this, "CityNew.png"));
             gameObjectManager.addGameObject(new Ufo(gameView, this, new Position(100, 100)));
         } else if (currentLevel.getClass() == Level2.class) {
             gameObjectManager.addGameObject(new MovableBackground(gameView, this, "CanyonNew.png"));
             gameObjectManager.addGameObject(new Triangle(gameView, this));
         }
+    }
 
+    private void destroyAll() {
+        for (GameObject o : gameObjectManager.gameObjects) {
+            destroy(o);
+        }
     }
 
     void setGameObjectManager(GameObjectManager gameObjectManager) {

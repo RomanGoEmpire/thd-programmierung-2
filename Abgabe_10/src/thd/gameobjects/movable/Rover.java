@@ -5,8 +5,6 @@ import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameview.GameView;
 
-import java.awt.*;
-
 /**
  * An object which can be controlled by the Player. It can drive and shoot.
  */
@@ -14,9 +12,6 @@ public class Rover extends CollidableGameObject implements AutoMovable {
 
 
     boolean allowedToShoot;
-
-    private boolean movingLeft;
-    private boolean movingRight;
     private boolean movingUp;
     private JumpState jumpState;
     private DamageState damageState;
@@ -29,29 +24,16 @@ public class Rover extends CollidableGameObject implements AutoMovable {
      */
     public Rover(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
-        position.x = GameView.WIDTH / 2d;
-        position.y = GameView.HEIGHT / 2d;
-        speedInPixel = 3;
+        position.x = 200;
+        position.y = GameView.HEIGHT - 55;
+        speedInPixel = 2;
 
         size = 0.1;
         allowedToShoot = true;
         rotation = 0;
-        movingLeft = false;
-        movingRight = false;
         movingUp = false;
         jumpState = JumpState.STANDARD;
         damageState = DamageState.STANDARD;
-    }
-
-    private enum JumpState {
-        STANDARD(0), HALF_UP(-20), UP(-40), HALF_DOWN(-20);
-
-        private final int yOffset;
-
-        JumpState(int yOffset) {
-            this.yOffset = yOffset;
-        }
-
     }
 
     private enum DamageState {
@@ -59,12 +41,14 @@ public class Rover extends CollidableGameObject implements AutoMovable {
         DAMAGED2("Z", 130), DEAD("X", 50);
 
         private final String display;
+
         private final int fontSize;
 
         DamageState(String display, int fontSize) {
             this.display = display;
             this.fontSize = fontSize;
         }
+
     }
 
     @Override
@@ -77,24 +61,26 @@ public class Rover extends CollidableGameObject implements AutoMovable {
 
     @Override
     public void reactToCollision(CollidableGameObject other) {
-
+        if (other.getClass() == BulletDown.class) {
+            gamePlayManager.isGameOver = true;
+            gamePlayManager.destroy(this);
+        }
     }
 
     @Override
     public void updateStatus() {
-        rollingAnimation();
+        rotation += 2;
         jumpingAnimation();
-        damageAnimation();
     }
 
     @Override
     public void addToCanvas() {
-        gameView.addTextToCanvas(damageState.display, position.x, position.y + jumpState.yOffset, damageState.fontSize, Color.white, rotation);
-        /*
-        gameView.addImageToCanvas("tire.png", position.x + 32, position.y + 24, size, rotation * 2);
-        gameView.addImageToCanvas("tire.png", position.x + 2, position.y + 24, size, 150 + rotation * 2);
-        gameView.addImageToCanvas("tire.png", position.x + 100, position.y + 24, size, 100 + rotation * 2);
-         */
+        //gameView.addTextToCanvas(damageState.display, position.x, position.y + jumpState.yOffset, damageState.fontSize, Color.white, rotation);
+        gameView.addImageToCanvas("rover.png", position.x, position.y + jumpState.yOffset, size, 0);
+        gameView.addImageToCanvas("tire.png", position.x + 32, position.y + jumpState.yOffset + 24, size, rotation * 2);
+        gameView.addImageToCanvas("tire.png", position.x + 2, position.y + jumpState.yOffset + 24, size, 150 + rotation * 2);
+        gameView.addImageToCanvas("tire.png", position.x + 100, position.y + jumpState.yOffset + 24, size, 100 + rotation * 2);
+
 
     }
 
@@ -108,7 +94,6 @@ public class Rover extends CollidableGameObject implements AutoMovable {
      */
     public void left() {
         position.left(speedInPixel);
-        movingLeft = true;
     }
 
     /**
@@ -116,61 +101,60 @@ public class Rover extends CollidableGameObject implements AutoMovable {
      */
     public void right() {
         position.right(speedInPixel);
-        movingRight = true;
+
     }
 
     /**
      * Movement up.
      */
     public void up() {
-        position.up(speedInPixel);
         movingUp = true;
-    }
-
-    /**
-     * Movement right.
-     */
-    public void down() {
-        position.down(speedInPixel);
     }
 
     /**
      * shoots.
      */
     public void shoot() {
+
     }
 
-    private void rollingAnimation() {
+    private enum JumpState {
+        STANDARD(0), TEN(-10), TWENTY(-20), THIRTY(-30), FORTY(-40), FIFTY(-50), TEN_DOWN(-10), TWENTY_DOWN(-20), THIRTY_DOWN(-30), FORTY_DOWN(-40);
 
-        if (movingLeft) {
-            movingLeft = false;
-            rotation -= 7;
-        } else {
-            rotation = 0;
+        private final int yOffset;
+
+        JumpState(int yOffset) {
+            this.yOffset = yOffset;
         }
 
     }
 
     private void jumpingAnimation() {
-        if (movingRight) {
+        if (movingUp) {
             if (!gameView.alarmIsSet("jumpingAnimation", this)) {
                 gameView.setAlarm("jumpingAnimation", this, 60);
             } else if (gameView.alarm("jumpingAnimation", this)) {
-                switch (jumpState) {
-                    case STANDARD:
-                        jumpState = JumpState.HALF_UP;
-                        break;
-                    case HALF_UP:
-                        jumpState = JumpState.UP;
-                        break;
-                    case UP:
-                        jumpState = JumpState.HALF_DOWN;
-                        break;
-                    case HALF_DOWN:
-                        jumpState = JumpState.STANDARD;
-                        movingRight = false;
-                        break;
-                    default:
+                if (jumpState == JumpState.STANDARD) {
+                    jumpState = JumpState.TEN;
+                } else if (jumpState == JumpState.TEN) {
+                    jumpState = JumpState.TWENTY;
+                } else if (jumpState == JumpState.TWENTY) {
+                    jumpState = JumpState.THIRTY;
+                } else if (jumpState == JumpState.THIRTY) {
+                    jumpState = JumpState.FORTY;
+                } else if (jumpState == JumpState.FORTY) {
+                    jumpState = JumpState.FIFTY;
+                } else if (jumpState == JumpState.FIFTY) {
+                    jumpState = JumpState.FORTY_DOWN;
+                } else if (jumpState == JumpState.FORTY_DOWN) {
+                    jumpState = JumpState.THIRTY_DOWN;
+                } else if (jumpState == JumpState.THIRTY_DOWN) {
+                    jumpState = JumpState.TWENTY_DOWN;
+                } else if (jumpState == JumpState.TWENTY_DOWN) {
+                    jumpState = JumpState.TEN_DOWN;
+                } else if (jumpState == JumpState.TEN_DOWN) {
+                    jumpState = JumpState.STANDARD;
+                    movingUp = false;
                 }
             }
         }

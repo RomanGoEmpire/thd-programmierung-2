@@ -13,7 +13,7 @@ public class Level1 extends Level {
      */
     public Level1(Difficulty difficulty) {
         super(difficulty);
-        name = "start";
+        name = "District 1";
         number = 1;
         timeBetweenSpawns = 1000;
         backgroundString = "city.png";

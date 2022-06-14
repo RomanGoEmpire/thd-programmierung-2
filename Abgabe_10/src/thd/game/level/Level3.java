@@ -10,7 +10,7 @@ public class Level3 extends Level{
      */
     public Level3(Difficulty difficulty) {
         super(difficulty);
-        name = "last";
+        name = "District 3";
         backgroundString = "canyon.png";
     }
 }

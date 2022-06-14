@@ -4,6 +4,7 @@ import thd.gameobjects.base.AutoMovable;
 import thd.gameobjects.base.CollidableGameObject;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.movable.Rover;
+import thd.gameobjects.unmovable.Overlay;
 import thd.gameview.GameView;
 
 import java.util.ArrayList;
@@ -14,12 +15,14 @@ class GameObjectManager {
     private final ArrayList<GameObject> toAdd;
     private final ArrayList<GameObject> toRemove;
     Rover rover;
+    Overlay overlay;
 
     GameObjectManager(GameView gameView, GamePlayManager gamePlayManager) {
         gameObjects = new LinkedList<>();
         toAdd = new ArrayList<>();
         toRemove = new ArrayList<>();
         rover = new Rover(gameView, gamePlayManager);
+        overlay = new Overlay(gameView,gamePlayManager);
     }
 
     void updateGameObjects() {
@@ -91,11 +94,12 @@ class GameObjectManager {
 
     private void sort() {
         for (int i = 0; i < gameObjects.size(); i++) {
-            if (gameObjects.get(i) instanceof Rover) {
+            if (gameObjects.get(i) instanceof Rover|| gameObjects.get(i) instanceof Overlay) {
                 gameObjects.remove(i);
             }
         }
         gameObjects.add(rover);
+        gameObjects.add(overlay);
     }
 
 }

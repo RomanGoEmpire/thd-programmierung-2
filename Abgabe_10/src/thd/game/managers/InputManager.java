@@ -39,9 +39,6 @@ class InputManager {
             case KeyEvent.VK_UP:
                 rover.up();
                 break;
-            case KeyEvent.VK_DOWN:
-                rover.down();
-                break;
             case KeyEvent.VK_SPACE:
                 rover.shoot();
                 break;
