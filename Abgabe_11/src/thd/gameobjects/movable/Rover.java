@@ -72,6 +72,12 @@ public class Rover extends CollidableGameObject implements AutoMovable {
 
     @Override
     public void updateStatus() {
+        blockMovement();
+    }
+
+    private void blockMovement() {
+        if(gamePlayManager.isGameOver){
+        }
     }
 
     @Override
@@ -115,7 +121,6 @@ public class Rover extends CollidableGameObject implements AutoMovable {
      */
     public void right() {
         position.right(speedInPixel);
-
     }
 
     public void jump() {
@@ -185,6 +190,10 @@ public class Rover extends CollidableGameObject implements AutoMovable {
                 default:
             }
         }
+    }
+
+    public void setAllowedToShoot(boolean allowedToShoot){
+        this.allowedToShoot = allowedToShoot;
     }
 
 

@@ -5,11 +5,11 @@ import thd.game.level.Level1;
 import thd.game.level.Level2;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
-import thd.gameobjects.movable.MovableBackground;
-import thd.gameobjects.movable.Triangle;
-import thd.gameobjects.movable.Ufo;
+import thd.gameobjects.movable.*;
 import thd.gameobjects.unmovable.Stars;
 import thd.gameview.GameView;
+
+import java.util.Random;
 
 /**
  * This class makes sure that all objects are spawning and getting destroyed afterwards.
@@ -32,6 +32,7 @@ public class GamePlayManager {
     private final LevelManager levelManager;
 
     private Level currentLevel;
+    private GameObject[] enemies;
 
     GamePlayManager(GameView gameView) {
         this.gameView = gameView;
@@ -39,6 +40,13 @@ public class GamePlayManager {
         currentLevel = levelManager.levels.getFirst();
         gameOver = false;
         isGameOver = false;
+
+
+        enemies = new GameObject[]{
+                new Triangle(gameView, this),
+                new Ufo(gameView, this, new Position(100, 100)),
+                new Rock(gameView, this),
+                new FloorBomb(gameView, this)};
     }
 
     void updateGamePlay() {
@@ -51,7 +59,7 @@ public class GamePlayManager {
             }
         } else {
             if (!gameView.timerIsActive("level", this)) {
-                gameView.activateTimer("level", this, 5000);
+                gameView.activateTimer("level", this, 60000);
                 if (currentLevel.name.equals("District 3")) {
                     levelManager.resetLevelCounter();
                 }
@@ -59,6 +67,7 @@ public class GamePlayManager {
                 initializeLevel();
             }
             gameObjectManager.moveWorld(2, 0);
+            spawnRandomEnemies();
         }
     }
 
@@ -67,6 +76,8 @@ public class GamePlayManager {
     }
 
     private void initializeGame() {
+        Level.Difficulty difficulty = FileManager.readDifficultyFromDisc();
+
         isGameOver = false;
         destroyAll();
         initializeLevel();
@@ -78,14 +89,31 @@ public class GamePlayManager {
         destroyAll();
         gameObjectManager.addGameObject(new Stars(gameView, this));
         gameObjectManager.addGameObject(gameObjectManager.rover);
+        gameObjectManager.rover.setAllowedToShoot(true);
         gameObjectManager.addGameObject(gameObjectManager.overlay);
         gameObjectManager.overlay.showMessage(currentLevel.name, 2);
         if (currentLevel.getClass() == Level1.class) {
             gameObjectManager.addGameObject(new MovableBackground(gameView, this, "CityNew.png"));
             gameObjectManager.addGameObject(new Ufo(gameView, this, new Position(100, 100)));
+            gameObjectManager.addGameObject(new Triangle(gameView,this));
+
         } else if (currentLevel.getClass() == Level2.class) {
             gameObjectManager.addGameObject(new MovableBackground(gameView, this, "CanyonNew.png"));
             gameObjectManager.addGameObject(new Triangle(gameView, this));
+        }
+    }
+
+    private void spawnRandomEnemies() {
+        if (!gameView.timerIsActive("spawnEnemy", this)) {
+            gameView.activateTimer("spawnEnemy", this, 5000);
+            System.out.println("test");
+            //gameObjectManager.addGameObject(enemies[(int) (Math.random() * 0)]);
+            Random random = new Random();
+            if(random.nextBoolean()){
+                gameObjectManager.addGameObject(new Triangle(gameView,this));
+            }else{
+                gameObjectManager.addGameObject(new Ufo(gameView,this,new Position(100,100)));
+            }
         }
     }
 

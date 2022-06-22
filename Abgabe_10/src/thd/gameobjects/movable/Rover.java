@@ -187,5 +187,9 @@ public class Rover extends CollidableGameObject implements AutoMovable {
         }
     }
 
+    void setAllowedToShoot(boolean allowedToShoot){
+        this.allowedToShoot = allowedToShoot;
+    }
+
 
 }

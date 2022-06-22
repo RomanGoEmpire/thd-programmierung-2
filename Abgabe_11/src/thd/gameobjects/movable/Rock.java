@@ -9,7 +9,7 @@ import java.awt.*;
 /**
  * Rock which is in the way of the Rover. It can be destroyed by the BulletRight.
  */
-class Rock extends CollidableGameObject {
+public class Rock extends CollidableGameObject {
 
 
     /**
@@ -18,7 +18,7 @@ class Rock extends CollidableGameObject {
      * @param gameView        Window to show the GameObject on.
      * @param gamePlayManager Controls the gameplay.
      */
-    Rock(GameView gameView, GamePlayManager gamePlayManager) {
+    public Rock(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
         width = 40;
         height = 40;

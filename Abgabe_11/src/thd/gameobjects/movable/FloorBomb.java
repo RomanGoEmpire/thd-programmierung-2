@@ -10,14 +10,14 @@ import java.awt.*;
 /**
  * Bomb which is on the Floor. If the Rover touches the bomb he looses a Life.w
  */
-class FloorBomb extends CollidableGameObject implements AutoMovable {
+public class FloorBomb extends CollidableGameObject implements AutoMovable {
     /**
      * Crates a new GameObject.
      *
      * @param gameView        Window to show the GameObject on.
      * @param gamePlayManager Controls the gameplay.
      */
-    FloorBomb(GameView gameView, GamePlayManager gamePlayManager) {
+    public FloorBomb(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
         position.x = GameView.WIDTH;
         position.y = GameView.HEIGHT - 10;
