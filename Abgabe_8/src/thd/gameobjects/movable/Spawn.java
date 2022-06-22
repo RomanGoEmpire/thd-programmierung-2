@@ -27,7 +27,7 @@ public class Spawn extends GameObject {
     @Override
     public void updateStatus() {
         if (position.x % 2 == 0) {
-            double offset = 3;
+            double offset = 0;
             gamePlayManager.spawn(new Floor(gameView, gamePlayManager, offset));
         }
         if (position.x % 400 == 0) {

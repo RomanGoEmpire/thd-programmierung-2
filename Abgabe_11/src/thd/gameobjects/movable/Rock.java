@@ -7,46 +7,50 @@ import thd.gameview.GameView;
 import java.awt.*;
 
 /**
- * Floor.
+ * Rock which is in the way of the Rover. It can be destroyed by the BulletRight.
  */
-class Floor extends CollidableGameObject {
+class Rock extends CollidableGameObject {
+
+
     /**
      * Crates a new GameObject.
      *
      * @param gameView        Window to show the GameObject on.
      * @param gamePlayManager Controls the gameplay.
      */
-    public Floor(GameView gameView, GamePlayManager gamePlayManager,double offset) {
+    Rock(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
+        width = 40;
+        height = 40;
         position.x = GameView.WIDTH;
-        position.y = GameView.HEIGHT - offset;
-        width = 3;
-
+        position.y = GameView.HEIGHT - 50;
+        speedInPixel = 3;
     }
 
     @Override
     protected void initializeHitbox() {
-        hitBoxWidth = 30;
-        hitBoxHeight = 3;
+        hitBoxWidth = 40;
+        hitBoxHeight = 40;
         hitBoxOffsetX = 0;
         hitBoxOffsetY = 0;
-
     }
 
     @Override
     public void reactToCollision(CollidableGameObject other) {
-
+        if (other.getClass() == Rover.class || other.getClass() == BulletRight.class) {
+            gamePlayManager.destroy(this);
+        }
     }
 
     @Override
     public void updateStatus() {
-        if (position.x < -width) {
+        if (position.x < 0) {
             gamePlayManager.destroy(this);
         }
     }
 
     @Override
     public void addToCanvas() {
-        gameView.addRectangleToCanvas(position.x, position.y, width, 30, 1, true, Color.green);
+        gameView.addRectangleToCanvas(position.x, position.y, width, height, 0, true, Color.GRAY);
     }
 }

@@ -9,13 +9,16 @@ import thd.gameview.GameView;
 /**
  * An object which can be controlled by the Player. It can drive and shoot.
  */
-public class Rover extends CollidableGameObject implements AutoMovable {
+public class RoverCopy extends CollidableGameObject implements AutoMovable {
 
+    private final double shotsPerSecondUp;
+    /**
+     * the Bullet right is only allowed to be shot if there is no bullet already flying.
+     */
 
     boolean allowedToShoot;
-    private boolean movingUp;
-    private DamageState damageState;
-    private int shotsPerSecondUp;
+    private Status status;
+    private String roverImage;
     private boolean jumpUP;
     private boolean jumping;
 
@@ -25,33 +28,17 @@ public class Rover extends CollidableGameObject implements AutoMovable {
      * @param gameView        is the window in which it gets displayed
      * @param gamePlayManager is the manager, which makes sure that the objects are spawned and destroyed.
      */
-    public Rover(GameView gameView, GamePlayManager gamePlayManager) {
+    public RoverCopy(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
         position.x = 200;
-        position.y = GameView.HEIGHT - 55;
-        speedInPixel = 1;
+        position.y = GameView.HEIGHT - 52;
+        speedInPixel = 1.5;
         shotsPerSecondUp = 5;
-        jumping = false;
-        jumpUP = false;
         size = 0.1;
         allowedToShoot = true;
-        rotation = 0;
-        movingUp = false;
-        damageState = DamageState.STANDARD;
-    }
-
-    private enum DamageState {
-        STANDARD("X", 50), DAMAGED1("Y", 90),
-        DAMAGED2("Z", 130), DEAD("X", 50);
-
-        private final String display;
-
-        private final int fontSize;
-
-        DamageState(String display, int fontSize) {
-            this.display = display;
-            this.fontSize = fontSize;
-        }
+        jumpUP = true;
+        status = Status.STANDARD;
+        roverImage = "rover.png";
     }
 
     @Override
@@ -64,25 +51,30 @@ public class Rover extends CollidableGameObject implements AutoMovable {
 
     @Override
     public void reactToCollision(CollidableGameObject other) {
-        if (other.getClass() == BulletDown.class) {
-            gamePlayManager.isGameOver = true;
+        if (other.getClass() == RoverCopy.class) {
             gamePlayManager.destroy(this);
         }
     }
 
     @Override
     public void updateStatus() {
+        switch (status) {
+            case DAMAGED:
+                roverImage = "roverDamaged.png";
+                break;
+            case STANDARD:
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + status);
+        }
     }
 
     @Override
     public void addToCanvas() {
-        //gameView.addTextToCanvas(damageState.display, position.x, position.y + jumpState.yOffset, damageState.fontSize, Color.white, rotation);
-        gameView.addImageToCanvas("rover.png", position.x, position.y, size, 0);
+        gameView.addImageToCanvas(roverImage, position.x, position.y, size, 0);
         gameView.addImageToCanvas("tire.png", position.x + 32, position.y + 24, size, rotation * 2);
         gameView.addImageToCanvas("tire.png", position.x + 2, position.y + 24, size, 150 + rotation * 2);
         gameView.addImageToCanvas("tire.png", position.x + 100, position.y + 24, size, 100 + rotation * 2);
-
-
     }
 
     @Override
@@ -99,6 +91,11 @@ public class Rover extends CollidableGameObject implements AutoMovable {
         updateRotation(speedInPixel);
     }
 
+    /**
+     * The object rotation is updated.
+     *
+     * @param rotation changing rotation.
+     */
     private void updateRotation(double rotation) {
         this.rotation += rotation;
     }
@@ -115,11 +112,6 @@ public class Rover extends CollidableGameObject implements AutoMovable {
      */
     public void right() {
         position.right(speedInPixel);
-
-    }
-
-    public void jump() {
-        jumping = true;
     }
 
     /**
@@ -139,6 +131,13 @@ public class Rover extends CollidableGameObject implements AutoMovable {
         }
     }
 
+    /**
+     * allows the player to jump with the Rover.
+     */
+    public void jump() {
+        jumping = true;
+    }
+
     private void executeJump() {
         if (jumpUP) {
             position.up(speedInPixel);
@@ -154,38 +153,6 @@ public class Rover extends CollidableGameObject implements AutoMovable {
         }
     }
 
-    private void damageAnimation() {
-        if (movingUp) {
-            switch (damageState) {
-                case STANDARD:
-                    damageState = DamageState.DAMAGED1;
-                    break;
-                case DAMAGED1:
-                    if (!gameView.alarmIsSet("damaged1", this)) {
-                        gameView.setAlarm("damaged1", this, 100);
-                    } else if (gameView.alarm("damaged1", this)) {
-                        damageState = DamageState.DAMAGED2;
-                    }
-                    break;
-                case DAMAGED2:
-                    if (!gameView.alarmIsSet("damaged2", this)) {
-                        gameView.setAlarm("damaged2", this, 200);
-                    } else if (gameView.alarm("damaged2", this)) {
-                        damageState = DamageState.DEAD;
-                    }
-                    break;
-                case DEAD:
-                    if (!gameView.alarmIsSet("dead", this)) {
-                        gameView.setAlarm("dead", this, 1000);
-                    } else if (gameView.alarm("dead", this)) {
-                        damageState = DamageState.STANDARD;
-                        movingUp = false;
-                    }
-                    break;
-                default:
-            }
-        }
-    }
-
-
+    private enum Status {STANDARD, DAMAGED}
+    
 }
